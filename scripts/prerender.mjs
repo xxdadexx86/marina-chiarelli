@@ -21,8 +21,12 @@ function buildDocument(route) {
   html = html.replace(/<meta name="description" content="[^"]*"\s*\/?>/i, `<meta name="description" content="${escapeHtml(seo.description)}" />`)
   html = html.replace(/<meta property="og:title" content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${escapeHtml(seo.title)}" />`)
   html = html.replace(/<meta property="og:description" content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${escapeHtml(seo.description)}" />`)
+  html = html.replace(/<meta property="og:url" content="[^"]*"\s*\/?>/i, `<meta property="og:url" content="${canonical}" />`)
+  html = html.replace(/<meta property="og:image" content="[^"]*"\s*\/?>/i, `<meta property="og:image" content="${image}" />`)
+  html = html.replace(/<meta property="og:locale" content="[^"]*"\s*\/?>/i, '<meta property="og:locale" content="it_IT" />')
+  html = html.replace(/<meta name="robots" content="[^"]*"\s*\/?>/i, `<meta name="robots" content="${seo.noindex ? 'noindex,nofollow' : 'index,follow'}" />`)
   html = html.replace(/<link rel="canonical" href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${canonical}" />`)
-  html = html.replace('</head>', `    <meta property="og:url" content="${canonical}" />\n    <meta property="og:image" content="${image}" />\n    <meta property="og:locale" content="it_IT" />\n    <meta name="twitter:title" content="${escapeHtml(seo.title)}" />\n    <meta name="twitter:description" content="${escapeHtml(seo.description)}" />\n    <meta name="twitter:image" content="${image}" />\n    <meta name="robots" content="${seo.noindex ? 'noindex,nofollow' : 'index,follow'}" />\n    <script type="application/ld+json">${JSON.stringify({
+  html = html.replace('</head>', `    <meta name="twitter:title" content="${escapeHtml(seo.title)}" />\n    <meta name="twitter:description" content="${escapeHtml(seo.description)}" />\n    <meta name="twitter:image" content="${image}" />\n    <script type="application/ld+json">${JSON.stringify({
     '@context': 'https://schema.org',
     '@type': route === '/' || route === '/chi-e-marina' ? 'Person' : 'WebPage',
     name: route === '/' || route === '/chi-e-marina' ? 'Marina Chiarelli' : seo.title,
