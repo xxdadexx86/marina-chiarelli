@@ -14,10 +14,10 @@ type EditorialItem = {
 }
 
 const nav = [
-  ['Home', '/'], ['Chi è Marina', '/chi-e-marina'], ['Impegno', '/impegno'], ['Progetti', '/progetti'],
-  ['Agenda', '/agenda'], ['News', '/news'], ['Rassegna stampa', '/rassegna-stampa'],
-  ['Media', '/media'], ['Contatti', '/contatti'],
+  ['Chi è Marina', '/chi-e-marina'], ['Impegno', '/impegno'], ['Progetti', '/progetti'],
+  ['News', '/news'], ['Media', '/media'], ['Contatti', '/contatti'],
 ]
+const socialLabels = { instagram: 'IG', facebook: 'FB', linkedin: 'IN' }
 const adminStatusMap: Record<string, string> = { Pubblicati: 'published', Bozze: 'draft', 'In revisione': 'review', Scartati: 'discarded' }
 
 function ScrollTop() {
@@ -64,7 +64,13 @@ function Header() {
         {open ? <X /> : <Menu />}
       </button>
       <nav className={open ? 'nav open' : 'nav'} aria-label="Navigazione principale">
-        {nav.map(([label, href]) => <NavLink key={href} to={href} onClick={() => setOpen(false)}>{label}</NavLink>)}
+        <div className="nav-main">{nav.map(([label, href]) => <NavLink key={href} to={href} onClick={() => setOpen(false)}>{label}</NavLink>)}</div>
+        <div className="nav-social" aria-label="Canali social">
+          {Object.entries(site.socials).map(([network, url]) => {
+            const label = socialLabels[network as keyof typeof socialLabels]
+            return <a href={url} target="_blank" rel="noreferrer" key={network} aria-label={`${network[0].toUpperCase() + network.slice(1)} di Marina Chiarelli`}><strong>{label}</strong><span>{network}</span></a>
+          })}
+        </div>
       </nav>
     </div>
   </header>
@@ -112,6 +118,10 @@ function ArrowLink({ to, children }: { to: string, children: React.ReactNode }) 
 
 function SectionTitle({ title, intro, link, label }: { title: string, intro?: string, link?: string, label?: string }) {
   return <div className="section-head"><div><h2>{title}</h2>{intro && <p>{intro}</p>}</div>{link && <ArrowLink to={link}>{label || 'Scopri di più'}</ArrowLink>}</div>
+}
+
+function YouTubeEmbed({ videoId, title }: { videoId: string, title: string }) {
+  return <div className="video-embed"><iframe src={`https://www.youtube-nocookie.com/embed/${videoId}`} title={title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /></div>
 }
 
 function NewsletterForm() {
@@ -163,7 +173,7 @@ function Home() {
 
     <section className="section shell"><SectionTitle title="Rassegna stampa" intro="Una selezione verificata di contenuti pubblicati da fonti istituzionali e territoriali." link="/rassegna-stampa" label="Archivio stampa" /><div className="press-grid">{press.filter(item => item.status === 'published').map(item => <PressCard item={item} key={item.title} />)}</div></section>
 
-    <section className="media-feature"><div className="shell media-grid"><div className="media-visual"><button aria-label="Riproduci video"><Play fill="currentColor" /></button></div><div><span className="meta">Media · In evidenza</span><h2>Luoghi, incontri, comunità</h2><p>Immagini e video dall'attività istituzionale, dai progetti culturali e dal dialogo con i territori piemontesi.</p><ArrowLink to="/media">Esplora la sezione media</ArrowLink></div></div></section>
+    <section className="media-feature"><div className="shell media-grid"><YouTubeEmbed videoId="SwvRO7lXD50" title="Intervista a Marina Chiarelli sulle politiche culturali piemontesi" /><div><span className="meta">Media · Intervista</span><h2>Cultura, giovani e territori</h2><p>Un’intervista dedicata alle politiche culturali piemontesi, alle pari opportunità e al lavoro rivolto alle nuove generazioni.</p><ArrowLink to="/media">Guarda tutti i video</ArrowLink></div></div></section>
     <NewsletterForm />
   </Layout>
 }
@@ -219,6 +229,27 @@ function Listing({ kind }: { kind: string }) {
   </section><NewsletterForm /></Layout>
 }
 
+function MediaPage() {
+  const youtubeVideos = [
+    { ...media[0], videoId: 'SwvRO7lXD50' },
+    { ...media[1], videoId: 'C824hstnRF0' },
+  ]
+  const socialMedia = media.slice(2)
+  return <Layout><PageHero title="Media" intro="Video, interviste e contenuti ufficiali dall’attività istituzionale." />
+    <section className="section shell">
+      <SectionTitle title="Video e interviste" intro="Guarda gli interventi direttamente dal sito attraverso il player ufficiale YouTube." />
+      <div className="video-grid">{youtubeVideos.map(item => <article className="video-card" key={item.slug}>
+        <YouTubeEmbed videoId={item.videoId} title={item.title} />
+        <span className="meta">{item.category} · {item.year}</span><h2>{item.title}</h2><p>{item.description}</p>
+      </article>)}</div>
+    </section>
+    <section className="section projects-band"><div className="shell">
+      <SectionTitle title="Dai canali social" intro="Campagne, appuntamenti e aggiornamenti pubblicati sui profili ufficiali." />
+      <div className="social-media-grid">{socialMedia.map(item => <article className="social-media-card" key={item.slug}><div><span className="meta">{item.category} · {item.year}</span><h2>{item.title}</h2><p>{item.description}</p></div><a className="arrow-link" href={item.url} target="_blank" rel="noreferrer">Apri il contenuto <ExternalLink size={16} /></a></article>)}</div>
+    </div></section><NewsletterForm />
+  </Layout>
+}
+
 function Detail({ type }: { type: 'project' | 'news' }) {
   const { slug } = useParams()
   const item = (type === 'project' ? projects : news).find(x => x.slug === slug) as EditorialItem | undefined
@@ -263,7 +294,7 @@ export function AppRoutes() {
     <Route path="/impegno/cultura" element={<ThemePage type="cultura" />} /><Route path="/impegno/pari-opportunita" element={<ThemePage type="pari" />} /><Route path="/impegno/politiche-giovanili" element={<ThemePage type="giovani" />} />
     <Route path="/progetti" element={<Listing kind="projects" />} /><Route path="/progetti/:slug" element={<Detail type="project" />} />
     <Route path="/news" element={<Listing kind="news" />} /><Route path="/news/:slug" element={<Detail type="news" />} /><Route path="/agenda" element={<Listing kind="agenda" />} /><Route path="/rassegna-stampa" element={<Listing kind="press" />} />
-    <Route path="/media" element={<Listing kind="media" />} />
+    <Route path="/media" element={<MediaPage />} />
     <Route path="/contatti" element={<Contacts />} /><Route path="/privacy" element={<Legal />} /><Route path="/cookie" element={<Legal cookie />} /><Route path="/admin" element={<Admin />} />
     <Route path="*" element={<Layout><PageHero title="Pagina non trovata" intro="La pagina richiesta non è disponibile." /></Layout>} />
   </Routes></>
