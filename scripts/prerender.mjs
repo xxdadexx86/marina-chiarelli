@@ -34,6 +34,15 @@ function buildDocument(route) {
     description: seo.description,
     image,
     jobTitle: route === '/' || route === '/chi-e-marina' ? 'Assessore della Regione Piemonte' : undefined,
+    birthDate: route === '/' || route === '/chi-e-marina' ? '1975-12-30' : undefined,
+    birthPlace: route === '/' || route === '/chi-e-marina' ? { '@type': 'Place', name: 'Novara' } : undefined,
+    worksFor: route === '/' || route === '/chi-e-marina' ? { '@type': 'GovernmentOrganization', name: 'Regione Piemonte', url: 'https://www.regione.piemonte.it/' } : undefined,
+    sameAs: route === '/' || route === '/chi-e-marina' ? [
+      'https://www.regione.piemonte.it/web/amministrazione/organi/chiarelli-marina',
+      'https://www.instagram.com/marina_chiarelli/',
+      'https://www.facebook.com/marinachiarelli/',
+      'https://it.linkedin.com/in/marina-chiarelli',
+    ] : undefined,
   })}</script>\n  </head>`)
   return html
 }

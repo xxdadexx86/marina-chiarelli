@@ -2,7 +2,7 @@ export const site = {
   name: 'Marina Chiarelli',
   role: 'Assessore della Regione Piemonte',
   delegations: 'Cultura, Pari opportunità e Politiche giovanili',
-  tagline: 'Cultura, territori e futuro del Piemonte',
+  tagline: 'Cultura, comunità e futuro del Piemonte',
   origin: 'https://marina-chiarelli.dloddi86.workers.dev',
   email: 'Contatto tramite modulo istituzionale',
   socials: {
@@ -11,6 +11,22 @@ export const site = {
     linkedin: 'https://it.linkedin.com/in/marina-chiarelli',
   },
 }
+
+export const biography = {
+  birth: 'Nata a Novara il 30 dicembre 1975',
+  education: 'Laureata in Giurisprudenza presso l’Università degli Studi di Milano-Bicocca',
+  profession: 'Avvocata e titolare dal 2006 di uno studio legale a Novara',
+  preview: 'Avvocata, amministratrice e Assessore della Regione Piemonte. Marina Chiarelli ha costruito il proprio percorso nelle istituzioni partendo da Novara, attraverso incarichi legati all’ambiente, allo sport, alle pari opportunità e allo sviluppo delle attività locali.',
+}
+
+export const timeline = [
+  { year: '2006', short: 'Studio legale', text: 'Avvia il proprio studio legale a Novara dopo la laurea in Giurisprudenza.' },
+  { year: '2016–18', short: 'Ambiente e servizi', text: 'Presiede il Consorzio Bacino Basso Novarese e l’ATO Rifiuti Novarese.' },
+  { year: '2018–19', short: 'Comune di Novara', text: 'È Assessore all’Ambiente e allo Sport del Comune di Novara.' },
+  { year: 'Dal 2019', short: 'Sport e pari opportunità', text: 'Segue Sport, impiantistica sportiva, Pari opportunità e sponsorizzazioni.' },
+  { year: '2022–24', short: 'Vicesindaco', text: 'È Vicesindaco e Assessore di Novara con deleghe alle attività economiche e al centro storico.' },
+  { year: 'Dal 2024', short: 'Regione Piemonte', text: 'Entra nella Giunta regionale; dal giugno 2025 segue Cultura, Pari opportunità e Politiche giovanili.' },
+]
 
 export const pillars = [
   {

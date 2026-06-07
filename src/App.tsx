@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, NavLink, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import { ArrowRight, Check, Clock3, ExternalLink, Mail, MapPin, Menu, Play, Quote, X } from 'lucide-react'
-import { events, media, news, pillars, press, projects, site } from './data/content'
+import { biography, events, media, news, pillars, press, projects, site, timeline } from './data/content'
 import { getSeo } from './data/seo'
 import './App.css'
 
@@ -14,8 +14,8 @@ type EditorialItem = {
 }
 
 const nav = [
-  ['Chi è Marina', '/chi-e-marina'], ['Impegno', '/impegno'], ['Progetti', '/progetti'],
-  ['News', '/news'], ['Media', '/media'], ['Contatti', '/contatti'],
+  ['Home', '/'], ['Chi è Marina', '/chi-e-marina'], ['Impegno', '/impegno'], ['Progetti', '/progetti'],
+  ['Agenda', '/agenda'], ['News', '/news'], ['Rassegna stampa', '/rassegna-stampa'], ['Media', '/media'], ['Contatti', '/contatti'],
 ]
 const socialLabels = { instagram: 'IG', facebook: 'FB', linkedin: 'IN' }
 const adminStatusMap: Record<string, string> = { Pubblicati: 'published', Bozze: 'draft', 'In revisione': 'review', Scartati: 'discarded' }
@@ -139,22 +139,33 @@ function NewsletterForm() {
 }
 
 function Hero() {
-  return <section className="hero"><div className="shell hero-grid"><div className="hero-copy"><h1>Marina<br />Chiarelli</h1><h2>Cultura, territori e futuro del Piemonte</h2><p>Assessore della Regione Piemonte con deleghe a Cultura, Pari opportunità e Politiche giovanili. Un percorso tra amministrazione locale e governo regionale, al servizio delle comunità.</p><div className="button-row"><Link className="button primary" to="/impegno">Scopri il suo impegno</Link><Link className="button text" to="/progetti">Progetti in evidenza <ArrowRight size={17} /></Link><Link className="button text" to="/news">Ultime notizie <ArrowRight size={17} /></Link></div></div><div className="hero-media"><img src="/images/marina-chiarelli.jpg" alt="Marina Chiarelli" /><div className="role"><strong>Assessore della Regione Piemonte</strong><span>Cultura, Pari opportunità e Politiche giovanili</span></div></div></div></section>
+  return <section className="hero"><div className="shell hero-grid"><div className="hero-copy"><span className="eyebrow">Regione Piemonte</span><h1>Marina<br />Chiarelli</h1><h2>Cultura, comunità e futuro del Piemonte</h2><p>Un impegno istituzionale al servizio della cultura, delle pari opportunità, dei giovani e dei territori piemontesi.</p><div className="button-row"><Link className="button primary" to="/impegno">Scopri il suo impegno</Link><Link className="button text" to="/agenda">Segui l’agenda <ArrowRight size={17} /></Link><Link className="button text" to="/news">Ultime notizie <ArrowRight size={17} /></Link></div></div><div className="hero-media"><img src="/images/marina-chiarelli.jpg" alt="Marina Chiarelli, Assessore della Regione Piemonte" /><div className="role"><strong>Assessore della Regione Piemonte</strong><span>Cultura, Pari opportunità e Politiche giovanili</span></div></div></div></section>
 }
 
 function ManifestoSection() {
-  return <section className="manifesto"><div className="shell manifesto-grid"><span className="manifesto-index">01</span><div><Quote className="quote-icon" /><h2>Territori, persone<br />e opportunità</h2></div><p>Il Piemonte cresce quando mette in relazione cultura, territori e persone. L’azione pubblica deve creare condizioni, reti e opportunità: patrimoni più accessibili, istituzioni culturali più stabili, prevenzione della violenza e spazi reali di partecipazione per i giovani.</p></div></section>
+  return <section className="manifesto"><div className="shell manifesto-grid"><span className="manifesto-index">01</span><div><Quote className="quote-icon" /><h2>La cultura come<br />infrastruttura del futuro</h2></div><p>La cultura non è solo memoria: è sviluppo, identità, partecipazione e coesione. Valorizzare il Piemonte significa costruire reti, sostenere i territori, dare spazio ai giovani e trasformare il patrimonio culturale in energia civile, sociale ed economica.</p></div></section>
+}
+
+function BiographyPreview() {
+  return <section className="section shell biography-preview"><div><span className="eyebrow">Profilo istituzionale</span><h2>Una storia nata a Novara, oggi al servizio del Piemonte</h2></div><div><p>{biography.preview}</p><p>Il suo lavoro regionale tiene insieme competenza amministrativa, ascolto dei territori e progettualità, con un’attenzione particolare alle comunità culturali, alle nuove generazioni e alle politiche di parità.</p><ArrowLink to="/chi-e-marina">Conosci il suo percorso</ArrowLink></div></section>
+}
+
+function JourneySection() {
+  return <section className="journey-section"><div className="shell"><SectionTitle title="Da Novara al Piemonte" intro="Un percorso istituzionale costruito attraverso responsabilità amministrative concrete, dal territorio alla dimensione regionale." /><div className="journey-timeline">{timeline.map(item => <article key={item.year}><span>{item.year}</span><h3>{item.short}</h3><p>{item.text}</p></article>)}</div></div></section>
 }
 
 function Home() {
   return <Layout>
     <Hero />
     <ManifestoSection />
+    <BiographyPreview />
 
     <section className="section shell">
       <SectionTitle title="Tre responsabilità, una visione" intro="Politiche che si incontrano nella vita concreta delle persone e dei territori." link="/impegno" />
       <div className="pillar-list">{pillars.map((p, i) => <PillarCard pillar={p} index={i} key={p.title} />)}</div>
     </section>
+
+    <JourneySection />
 
     <section className="section projects-band"><div className="shell">
       <SectionTitle title="Progetti per il Piemonte" intro="Percorsi di lavoro che uniscono istituzioni, comunità e competenze." link="/progetti" label="Tutti i progetti" />
@@ -171,7 +182,7 @@ function Home() {
       <div className="intervention-grid">{news.slice(0, 3).map(item => <NewsCard item={item} key={item.slug} />)}</div>
     </div></section>
 
-    <section className="section shell"><SectionTitle title="Rassegna stampa" intro="Una selezione verificata di contenuti pubblicati da fonti istituzionali e territoriali." link="/rassegna-stampa" label="Archivio stampa" /><div className="press-grid">{press.filter(item => item.status === 'published').map(item => <PressCard item={item} key={item.title} />)}</div></section>
+    <section className="section shell"><SectionTitle title="Rassegna stampa" intro="Una selezione verificata di contenuti pubblicati da fonti istituzionali e territoriali." link="/rassegna-stampa" label="Archivio stampa" /><div className="press-grid">{press.filter(item => item.status === 'published').slice(0, 4).map(item => <PressCard item={item} key={item.title} />)}</div></section>
 
     <section className="media-feature"><div className="shell media-grid"><YouTubeEmbed videoId="SwvRO7lXD50" title="Intervista a Marina Chiarelli sulle politiche culturali piemontesi" /><div><span className="meta">Media · Intervista</span><h2>Cultura, giovani e territori</h2><p>Un’intervista dedicata alle politiche culturali piemontesi, alle pari opportunità e al lavoro rivolto alle nuove generazioni.</p><ArrowLink to="/media">Guarda tutti i video</ArrowLink></div></div></section>
     <NewsletterForm />
@@ -183,22 +194,23 @@ function PageHero({ title, intro }: { title: string, intro?: string }) {
 }
 
 function Biography() {
-  const timeline = [
-    ['2006', 'Avvia il proprio studio legale a Novara dopo la laurea in Giurisprudenza all’Università di Milano-Bicocca.'],
-    ['2016–18', 'Presiede organismi novaresi nel settore dei rifiuti e dell’ambiente, maturando esperienza di governance territoriale.'],
-    ['2018–22', 'È Assessore del Comune di Novara con deleghe che comprendono Ambiente, Sport, impiantistica e Pari opportunità.'],
-    ['2022–24', 'Ricopre il ruolo di Vicesindaco e Assessore del Comune di Novara, seguendo attività economiche, mercati e centro storico.'],
-    ['Dal 2024', 'Entra nella Giunta regionale; dal 25 giugno 2025 segue Cultura, Pari opportunità e Politiche giovanili.'],
-  ]
-  return <Layout><PageHero title="Chi è Marina" intro="Dalla professione forense all’amministrazione di Novara, fino alla Giunta della Regione Piemonte." />
-    <section className="section shell bio-grid"><img src="/images/marina-chiarelli.jpg" alt="Ritratto istituzionale di Marina Chiarelli" /><div className="prose"><h2>Competenza professionale ed esperienza amministrativa</h2><p>Nata a Novara il 30 dicembre 1975, Marina Chiarelli è laureata in Giurisprudenza all’Università degli Studi di Milano-Bicocca ed è titolare dal 2006 di uno studio legale nella sua città.</p><p>Dopo gli incarichi nel sistema novarese dei rifiuti e dell’ambiente, entra nella Giunta del Comune di Novara nel 2018. Negli anni segue deleghe che spaziano dall’ambiente allo sport, dall’impiantistica alle pari opportunità, fino al commercio, all’artigianato, ai mercati e alla valorizzazione del centro storico.</p><p>Dal 16 ottobre 2022 al 1° luglio 2024 è Vicesindaco di Novara. Il 1° luglio 2024 entra nella Giunta della Regione Piemonte; dal 25 giugno 2025 il suo mandato è concentrato su Cultura, Pari opportunità e Politiche giovanili.</p><p>Il lavoro regionale mette al centro il rafforzamento del sistema culturale, le reti territoriali, la prevenzione della violenza di genere e programmi capaci di offrire opportunità concrete alle nuove generazioni.</p><blockquote>«La cultura oggi è una leva economica, sociale e identitaria.»</blockquote><a className="arrow-link" href="https://www.regione.piemonte.it/web/amministrazione/organi/chiarelli-marina" target="_blank" rel="noreferrer">Profilo ufficiale Regione Piemonte <ExternalLink size={16} /></a></div></section>
+  return <Layout><PageHero title="Chi è Marina" intro="Una storia istituzionale nata a Novara e oggi al servizio del Piemonte." />
+    <section className="section shell bio-intro"><img src="/images/marina-chiarelli.jpg" alt="Ritratto istituzionale di Marina Chiarelli" /><div><span className="eyebrow">Marina Chiarelli</span><h2>Competenza, responsabilità e attenzione ai territori</h2><p>{biography.birth}. Dopo la laurea in Giurisprudenza presso l’Università degli Studi di Milano-Bicocca, avvia nel 2006 il proprio studio legale a Novara, costruendo un percorso professionale fondato sulla competenza e sull’attenzione alle persone.</p></div></section>
+    <section className="shell biography-story">
+      <article><span>01</span><div><h2>Radici novaresi</h2><p>Il legame con Novara attraversa la sua esperienza professionale e istituzionale. È nel territorio novarese che matura le prime responsabilità pubbliche e il confronto quotidiano con enti, servizi, attività economiche e comunità locali.</p></div></article>
+      <article><span>02</span><div><h2>Formazione giuridica e professione</h2><p>La formazione giuridica e l’attività forense sviluppano un metodo fondato sull’analisi, sull’ascolto e sulla responsabilità delle decisioni. Dal 2006 è titolare di uno studio legale nella sua città.</p></div></article>
+      <article><span>03</span><div><h2>L’impegno amministrativo</h2><p>Tra ottobre 2016 e maggio 2018 presiede il Consorzio Bacino Basso Novarese e l’ATO Rifiuti Novarese. Nel 2018 entra nella Giunta comunale seguendo Ambiente e Sport; dal 2019 assume anche le deleghe a impiantistica sportiva, Pari opportunità e sponsorizzazioni.</p></div></article>
+      <article><span>04</span><div><h2>L’esperienza da Vicesindaco</h2><p>Eletta alle amministrative comunali del 2021, dal 16 ottobre 2022 ricopre il ruolo di Vicesindaco e Assessore con competenze su Commercio, Artigianato, Industria e Agricoltura, mercati cittadini, valorizzazione del centro storico e tutela dei consumatori.</p></div></article>
+      <article><span>05</span><div><h2>Il ruolo in Regione Piemonte</h2><p>Il 1° luglio 2024 entra nella Giunta regionale. Dal 25 giugno 2025 il mandato si concentra su Cultura, Pari opportunità e Politiche giovanili, tre ambiti legati alla qualità della vita, alla coesione e alle opportunità dei territori.</p></div></article>
+      <article><span>06</span><div><h2>Una visione per il Piemonte</h2><p>La cultura come infrastruttura civile ed economica, le pari opportunità come politica concreta e i giovani come protagonisti: una linea di lavoro che unisce identità locale, reti regionali e capacità progettuale.</p><blockquote>«La cultura oggi è una leva economica, sociale e identitaria.»</blockquote><a className="arrow-link" href="https://www.regione.piemonte.it/web/amministrazione/organi/chiarelli-marina" target="_blank" rel="noreferrer">Profilo ufficiale Regione Piemonte <ExternalLink size={16} /></a></div></article>
+    </section>
     <section className="bio-values shell">{[['Professione','Avvocata e titolare dal 2006 di uno studio legale a Novara.'],['Novara','Un’esperienza amministrativa iniziata in Giunta nel 2018 e proseguita come Vicesindaco.'],['Regione','Assessore della Regione Piemonte dal 1° luglio 2024.'],['Deleghe','Cultura, Pari opportunità e Politiche giovanili dal 25 giugno 2025.']].map(([title,text]) => <article key={title}><h2>{title}</h2><p>{text}</p></article>)}</section>
-    <section className="timeline-section"><div className="shell"><SectionTitle title="Il percorso" intro="Le tappe essenziali di un impegno costruito nel tempo." /><div className="timeline">{timeline.map(([year, text]) => <div key={year}><strong>{year}</strong><p>{text}</p></div>)}</div></div></section>
+    <section className="timeline-section"><div className="shell"><SectionTitle title="Il percorso" intro="Le tappe essenziali di un impegno costruito nel tempo." /><div className="timeline">{timeline.map(item => <div key={item.year}><strong>{item.year}</strong><p>{item.text}</p></div>)}</div></div></section>
     <NewsletterForm /></Layout>
 }
 
 function Commitment() {
-  return <Layout><PageHero title="Il suo impegno" intro="Cultura, pari opportunità e politiche giovanili: tre ambiti connessi da una visione comune di sviluppo e partecipazione." />
+  return <Layout><PageHero title="Il suo impegno" intro="Tre ambiti per costruire comunità più forti, inclusive e consapevoli." />
     <section className="section shell commitment-list">{pillars.map((p, i) => <article key={p.title}><span>0{i + 1}</span><div><h2>{p.title}</h2><p>{p.long}</p><h3>Obiettivi e temi principali</h3><ul>{p.goals.map(g => <li key={g}>{g}</li>)}</ul><div className="related-line"><strong>Contenuti collegati</strong><span>{projects.filter(project => project.theme === p.key || project.theme === 'all').length} progetti</span><span>{news.filter(item => item.category.toLowerCase().includes(p.title.split(' ')[0].toLowerCase())).length} news</span><span>{media.filter(item => item.description.toLowerCase().includes(p.title.split(' ')[0].toLowerCase())).length} media</span></div><ArrowLink to={p.href}>Esplora il tema</ArrowLink></div></article>)}</section><NewsletterForm /></Layout>
 }
 
@@ -213,7 +225,7 @@ function Listing({ kind }: { kind: string }) {
   const configs: Record<string, { title: string, intro: string }> = {
     projects: { title: 'Progetti', intro: 'Iniziative e percorsi di lavoro per valorizzare cultura, territori, persone e nuove generazioni.' },
     news: { title: 'Notizie', intro: 'Attività istituzionale, incontri, progetti e aggiornamenti dal territorio.' },
-    agenda: { title: 'Attività e appuntamenti', intro: 'Una selezione di iniziative pubbliche documentate dalle fonti istituzionali e giornalistiche.' },
+    agenda: { title: 'Agenda', intro: 'Incontri, appuntamenti istituzionali e iniziative sul territorio. Gli elementi pubblicati sono documentati dalle fonti disponibili.' },
     press: { title: 'Rassegna stampa', intro: 'Una selezione approvata di articoli e contributi, con sintesi originale e collegamento alla fonte.' },
     media: { title: 'Media', intro: 'Foto, video, interviste e materiali ufficiali dall’attività istituzionale.' },
   }

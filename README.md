@@ -122,7 +122,7 @@ I campi social sono in `src/data/content.ts`. Pubblicare soltanto profili verifi
 
 ## Area amministrazione
 
-La route `/admin` mostra la prima interfaccia editoriale, inclusa la coda della rassegna stampa con filtri per stato e sentiment. L'accesso nel frontend è dimostrativo; in produzione tutte le operazioni CRUD devono passare dal Worker, che verifica `ADMIN_PASSWORD`. La struttura è pronta per sostituire questo meccanismo con Cloudflare Access o un provider OIDC.
+La route `/admin` mostra una prima interfaccia editoriale per la rassegna stampa. Prima di abilitarla per l'uso redazionale, l'autenticazione frontend deve essere sostituita con Cloudflare Access o un provider OIDC e tutte le operazioni CRUD devono passare dal Worker.
 
 ## Rassegna stampa
 
@@ -136,7 +136,7 @@ Gli endpoint `/api/contact` e `/api/newsletter` validano, sanitizzano e salvano 
 
 ## Contenuti e fonti
 
-I contenuti editoriali datati 2026 sono dimostrativi e non rappresentano eventi o dichiarazioni reali. Ruolo e profilo biografico essenziale sono basati sulla pagina ufficiale della Regione Piemonte. La fotografia è quella pubblicata nella scheda istituzionale regionale.
+Biografia, incarichi, progetti, news, rassegna e media derivano dal dossier editoriale verificato e dalle fonti istituzionali o giornalistiche collegate in ogni scheda. La rassegna usa esclusivamente sintesi originali, titolo, fonte, data e link esterno. Le attività mostrate in agenda sono elementi documentati, non appuntamenti futuri inventati.
 
 ## SEO
 
@@ -152,4 +152,4 @@ Ogni URL pubblico viene prerenderizzato con:
 
 Quando viene collegato un dominio personalizzato, aggiornare `site.origin` in `src/data/content.ts`, `ALLOWED_ORIGIN` in `wrangler.toml` e gli URL in `public/robots.txt`.
 
-La rassegna stampa demo non riproduce articoli: usa sintesi originali e link alla fonte. Prima della pubblicazione ogni voce va verificata, approvata e collegata all'articolo effettivo. Privacy e Cookie Policy sono bozze tecniche da sottoporre a verifica legale.
+La rassegna stampa non riproduce articoli: usa sintesi originali e link alla fonte. Privacy e Cookie Policy devono essere sottoposte a verifica legale prima dell'attivazione definitiva dei moduli e della newsletter.
