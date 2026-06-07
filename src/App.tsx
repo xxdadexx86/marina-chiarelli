@@ -286,6 +286,7 @@ function Listing({ kind }: { kind: string }) {
   return <Layout><PageHero {...configs[kind]} /><section className="section shell archive-grid">
     {(data as EditorialItem[]).map(item => <article key={item.slug || item.title} className={kind === 'agenda' ? 'archive-item agenda-item' : 'archive-item'}>
       {kind === 'agenda' && <div className="date-box"><strong>{item.day}</strong><span>{item.month}</span></div>}
+      {kind === 'projects' && <ProjectVisual item={item} />}
       {kind === 'media' && <FallbackVisual label={item.category || 'Media'} theme={item.category} />}
       <div><span className="meta">{item.category || item.source || item.location} · {item.date || item.year}</span><h2>{item.title}</h2><p>{item.summary || item.excerpt || item.description}</p>
       {kind === 'agenda' && <p className="event-details"><Clock3 size={15} /> {item.time} <MapPin size={15} /> {item.location} · {item.status}</p>}
@@ -319,7 +320,7 @@ function Detail({ type }: { type: 'project' | 'news' }) {
   const { slug } = useParams()
   const item = (type === 'project' ? projects : news).find(x => x.slug === slug) as EditorialItem | undefined
   if (!item) return <Layout><PageHero title="Contenuto non trovato" intro="Il contenuto richiesto non è disponibile." /></Layout>
-  return <Layout><PageHero title={item.title} intro={item.summary || item.excerpt} /><article className="section shell article-prose"><span className="meta">{item.category} · {item.date}</span><h2>{type === 'project' ? 'Obiettivi e azioni' : 'La notizia'}</h2><p>{item.body}</p><p>{item.body2}</p>{item.tags && <div className="tag-row">{item.tags.map(tag => <span key={tag}>{tag}</span>)}</div>}{type === 'project' && <><h3>Territori coinvolti</h3><p>{item.territories}</p><h3>Stato del progetto</h3><p>{item.status}</p></>}{item.sourceUrl && <p><a className="arrow-link" href={item.sourceUrl} target="_blank" rel="noreferrer">Fonte: {item.sourceLabel || 'approfondimento ufficiale'} <ExternalLink size={16} /></a></p>}</article><NewsletterForm /></Layout>
+  return <Layout><PageHero title={item.title} intro={item.summary || item.excerpt} />{type === 'project' && <section className="shell detail-visual"><ProjectVisual item={item} /></section>}<article className="section shell article-prose"><span className="meta">{item.category} · {item.date}</span><h2>{type === 'project' ? 'Obiettivi e azioni' : 'La notizia'}</h2><p>{item.body}</p><p>{item.body2}</p>{item.tags && <div className="tag-row">{item.tags.map(tag => <span key={tag}>{tag}</span>)}</div>}{type === 'project' && <><h3>Territori coinvolti</h3><p>{item.territories}</p><h3>Stato del progetto</h3><p>{item.status}</p></>}{item.sourceUrl && <p><a className="arrow-link" href={item.sourceUrl} target="_blank" rel="noreferrer">Fonte: {item.sourceLabel || 'approfondimento ufficiale'} <ExternalLink size={16} /></a></p>}</article><NewsletterForm /></Layout>
 }
 
 function ContactForm() {

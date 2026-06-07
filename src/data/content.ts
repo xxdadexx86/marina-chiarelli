@@ -35,7 +35,7 @@ export const pillars = [
     key: 'cultura', title: 'Cultura', href: '/impegno/cultura',
     description: 'Rafforzare il sistema culturale piemontese significa investire in patrimonio, eventi, istituzioni, operatori e reti territoriali. La cultura diventa così una leva concreta di sviluppo e identità.',
     long: 'Rafforzare il sistema culturale piemontese significa investire in patrimonio, eventi, istituzioni, operatori e reti territoriali. La cultura diventa così una leva concreta di sviluppo e identità.',
-    editorial: 'Rafforza Cultura, i bandi triennali, l’ingresso in Federculture, Rete Antonelliana e NID Platform 2026 raccontano un metodo: costruire alleanze, dare continuità agli operatori e mettere in relazione istituzioni e territori.',
+    editorial: 'I bandi triennali, l’ingresso in Federculture, Rete Antonelliana e NID Platform 2026 raccontano un metodo: costruire alleanze, dare continuità agli operatori e mettere in relazione istituzioni e territori.',
     editorial2: 'Dal Salone del Libro ai principali enti del patrimonio piemontese, la cultura viene affrontata non come somma di eventi, ma come ecosistema capace di produrre conoscenza, lavoro qualificato, partecipazione e identità.',
     goals: ['Sostegno agli enti culturali', 'Bandi e programmazione triennale', 'Patrimonio e reti territoriali', 'Spettacolo dal vivo', 'Accesso alla cultura'],
   },
@@ -59,16 +59,8 @@ export const pillars = [
 
 export const projects = [
   {
-    slug: 'rafforza-cultura', title: 'Rafforza Cultura', category: 'Cultura', theme: 'cultura',
-    status: 'Attivo', date: 'Dal 2025', territories: 'Piemonte', image: '/images/marina-chiarelli.jpg',
-    summary: 'Supporto agli enti culturali attraverso accesso al credito, semplificazione e tempi di liquidazione più sostenibili.',
-    body: 'Rafforza Cultura interviene sulla tenuta organizzativa ed economica di associazioni ed enti culturali piemontesi. La misura affronta nodi concreti come l’accesso al credito e l’anticipo delle risorse connesse ai contributi regionali.',
-    body2: 'Il progetto esprime un metodo amministrativo orientato alla sostenibilità del sistema culturale: non soltanto finanziare attività, ma rendere più solide le condizioni in cui operatori e istituzioni possono programmare.',
-    sourceUrl: 'https://www.regione.piemonte.it/web/pinforma/notizie/rafforza-cultura-un-nuovo-supporto-ad-associazioni-enti-culturali', sourceLabel: 'Regione Piemonte',
-  },
-  {
     slug: 'rete-antonelliana', title: 'Rete Antonelliana. Cultura che unisce', category: 'Cultura', theme: 'cultura',
-    status: 'In corso', date: '2026', territories: 'Torino, Novara e territori piemontesi', image: '/images/marina-chiarelli.jpg',
+    status: 'In corso', date: '2026', territories: 'Torino, Novara e territori piemontesi', image: '/images/rete-antonelliana.jpg',
     summary: 'Una rete dedicata all’eredità di Alessandro Antonelli che collega architetture, istituzioni e comunità.',
     body: 'Rete Antonelliana mette in relazione luoghi e istituzioni legati all’opera di Alessandro Antonelli, valorizzando un patrimonio che unisce Torino, il Novarese e altri territori piemontesi.',
     body2: 'Il progetto coniuga identità regionale, divulgazione e collaborazione tra enti. La rete rende leggibile un patrimonio diffuso e costruisce una proposta culturale capace di parlare a pubblici diversi.',
@@ -76,7 +68,7 @@ export const projects = [
   },
   {
     slug: 'nid-platform-2026', title: 'NID Platform 2026', category: 'Cultura', theme: 'cultura',
-    status: 'Programmato', date: '2026', territories: 'Piemonte', image: '/images/marina-chiarelli.jpg',
+    status: 'Programmato', date: '2026', territories: 'Piemonte', image: '/images/nid-platform.png',
     summary: 'La Nuova Piattaforma della Danza Italiana arriva in Piemonte, valorizzando la qualità del sistema regionale.',
     body: 'La NID Platform è un appuntamento nazionale dedicato alla danza contemporanea italiana. L’edizione 2026 in Piemonte riconosce la solidità della filiera regionale dello spettacolo dal vivo.',
     body2: 'L’iniziativa mette in dialogo artisti, operatori e istituzioni e rafforza il posizionamento nazionale del Piemonte, con una programmazione pensata per coinvolgere più luoghi e territori.',

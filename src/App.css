@@ -223,7 +223,9 @@ p { color: var(--color-muted); font-size: 18px; line-height: 1.65; }
 .archive-item { border-top: 1px solid var(--color-border); padding: 34px 0; }
 .archive-item h2 { font-size: 30px; color: var(--color-primary-deep); }
 .agenda-item { display: grid; grid-template-columns: 86px 1fr; gap: 24px; }
-.archive-item > .visual-fallback { height: 230px; margin-bottom: 25px; }
+.archive-item > .visual-fallback, .archive-item > .project-image { height: 230px; margin-bottom: 25px; box-shadow: var(--shadow-card); }
+.detail-visual { margin-top: -48px; }
+.detail-visual .project-image, .detail-visual .visual-fallback { height: min(420px, 46vw); min-height: 260px; box-shadow: var(--shadow-soft); }
 .article-prose { max-width: 850px; }
 .contact-grid { display: grid; grid-template-columns: .75fr 1.25fr; gap: 80px; }
 .contact-note { border-top: 3px solid var(--color-accent); margin-top: 40px; padding-top: 24px; display: flex; flex-direction: column; gap: 8px; font-size: 16px; }
