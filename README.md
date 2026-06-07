@@ -1,6 +1,6 @@
 # Marina Chiarelli
 
-Prima versione della piattaforma personale-istituzionale di Marina Chiarelli. Il progetto presenta attività, temi, progetti, agenda, interventi, media e rassegna stampa con un tono editoriale sobrio e non partitico.
+Piattaforma personale-istituzionale di Marina Chiarelli. Il progetto presenta attività, temi, progetti, agenda, news, media e rassegna stampa con un tono editoriale sobrio e non partitico.
 
 ## Stack
 
@@ -10,6 +10,7 @@ Prima versione della piattaforma personale-istituzionale di Marina Chiarelli. Il
 - Cloudflare Worker per API e cron
 - Cloudflare D1 per dati editoriali, contatti e log
 - Lucide per le icone
+- prerender SSG per contenuti HTML indicizzabili
 
 ## Avvio locale
 
@@ -32,9 +33,13 @@ Il frontend è disponibile normalmente su `http://localhost:5173`. La cartella d
 
 ```text
 src/
-  data/content.ts       contenuti demo strutturati
-  App.tsx               routing, pagine e componenti
+  data/content.ts       contenuti e impostazioni strutturate
+  data/seo.ts           metadati e rotte prerender
+  App.tsx               routing, pagine e componenti editoriali
+  entry-server.tsx      renderer HTML di build
   App.css               design system responsive
+scripts/
+  prerender.mjs         genera un HTML completo per ogni URL
 public/
   images/               immagini pubbliche
   robots.txt
@@ -56,7 +61,7 @@ Il repository è configurato per il deploy collegato di Cloudflare Workers. Il W
 4. Usare come deploy command `npx wrangler deploy`.
 5. Configurare il dominio e aggiornare canonical, sitemap e `ALLOWED_ORIGIN`.
 
-Il fallback SPA e il routing degli asset sono già definiti in `wrangler.toml`. Le richieste `/api/*` passano dal Worker; tutte le altre route servono il frontend React.
+Il routing degli asset è definito in `wrangler.toml`. La build genera un documento HTML completo per ogni pagina e Cloudflare usa `drop-trailing-slash` per mantenere URL puliti. Le richieste `/api/*` passano dal Worker.
 
 ## D1 e Worker
 
@@ -100,7 +105,20 @@ Il cron è configurato ogni giorno alle 05:00 UTC. Ogni esecuzione salva query, 
 
 Consultare `.env.example`. Le credenziali SMTP e la password admin non devono essere committate. Per Cloudflare usare Secrets; per Pages usare Environment Variables.
 
-Variabili previste: `ADMIN_PASSWORD`, `ALLOWED_ORIGIN`, `PRESS_PROVIDER`, `PRESS_FEEDS`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`.
+Variabili previste:
+
+- `ADMIN_PASSWORD`
+- `ALLOWED_ORIGIN`
+- `PRESS_PROVIDER`
+- `PRESS_FEEDS`
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_USER`
+- `SMTP_PASS`
+- `CONTACT_TO_EMAIL`
+- `CONTACT_FROM_EMAIL`
+
+I campi social sono in `src/data/content.ts`. Pubblicare soltanto profili verificati.
 
 ## Area amministrazione
 
@@ -119,5 +137,19 @@ Gli endpoint `/api/contact` e `/api/newsletter` validano, sanitizzano e salvano 
 ## Contenuti e fonti
 
 I contenuti editoriali datati 2026 sono dimostrativi e non rappresentano eventi o dichiarazioni reali. Ruolo e profilo biografico essenziale sono basati sulla pagina ufficiale della Regione Piemonte. La fotografia è quella pubblicata nella scheda istituzionale regionale.
+
+## SEO
+
+Ogni URL pubblico viene prerenderizzato con:
+
+- title e meta description specifici
+- canonical coerente
+- Open Graph e Twitter Card
+- un solo H1
+- contenuto principale già presente nell'HTML
+- JSON-LD `Person` o `WebPage`
+- sitemap completa e robots.txt
+
+Quando viene collegato un dominio personalizzato, aggiornare `site.origin` in `src/data/content.ts`, `ALLOWED_ORIGIN` in `wrangler.toml` e gli URL in `public/robots.txt`.
 
 La rassegna stampa demo non riproduce articoli: usa sintesi originali e link alla fonte. Prima della pubblicazione ogni voce va verificata, approvata e collegata all'articolo effettivo. Privacy e Cookie Policy sono bozze tecniche da sottoporre a verifica legale.

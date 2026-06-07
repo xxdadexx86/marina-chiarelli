@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin
 
-Sitemap: https://www.marinachiarelli.it/sitemap.xml
+Sitemap: https://marina-chiarelli.dloddi86.workers.dev/sitemap.xml

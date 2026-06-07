@@ -6,11 +6,12 @@ compatibility_date = "2026-06-01"
 directory = "./dist"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
+html_handling = "drop-trailing-slash"
 run_worker_first = ["/api/*"]
 
 [triggers]
 crons = ["0 5 * * *"]
 
 [vars]
-ALLOWED_ORIGIN = "https://www.marinachiarelli.it"
+ALLOWED_ORIGIN = "https://marina-chiarelli.dloddi86.workers.dev"
 PRESS_PROVIDER = "rss"
