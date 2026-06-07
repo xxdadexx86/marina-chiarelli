@@ -1,5 +1,6 @@
 interface Env {
-  DB: D1Database
+  DB?: D1Database
+  ASSETS: Fetcher
   ALLOWED_ORIGIN: string
   ADMIN_PASSWORD: string
   PRESS_PROVIDER?: string
@@ -23,6 +24,7 @@ function clean(value: unknown, max = 3000) {
 }
 
 async function createContact(request: Request, env: Env) {
+  if (!env.DB) return json({ error:'Database non ancora configurato' }, 503, env.ALLOWED_ORIGIN)
   const body = await request.json<Record<string, unknown>>()
   const email = clean(body.email, 254)
   if (!email.includes('@') || !body.privacyConsent || clean(body.message, 5000).length < 10) return json({ error:'Dati non validi' }, 400, env.ALLOWED_ORIGIN)
@@ -32,6 +34,7 @@ async function createContact(request: Request, env: Env) {
 }
 
 async function subscribe(request: Request, env: Env) {
+  if (!env.DB) return json({ error:'Database non ancora configurato' }, 503, env.ALLOWED_ORIGIN)
   const body = await request.json<Record<string, unknown>>()
   const email = clean(body.email, 254)
   if (!email.includes('@') || !body.consent) return json({ error:'Consenso ed email validi sono obbligatori' }, 400, env.ALLOWED_ORIGIN)
@@ -41,6 +44,7 @@ async function subscribe(request: Request, env: Env) {
 }
 
 async function runPressCron(env: Env) {
+  if (!env.DB) return
   const started = Date.now()
   let errors: string[] = []
   const found = 0

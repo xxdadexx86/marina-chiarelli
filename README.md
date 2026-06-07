@@ -46,13 +46,17 @@ migrations/
 design/                 concept visuali di riferimento
 ```
 
-## Cloudflare Pages
+## Cloudflare Workers Static Assets
 
-1. Collegare il repository GitHub a Cloudflare Pages.
+Il repository è configurato per il deploy collegato di Cloudflare Workers. Il Worker serve la build React come Static Assets e gestisce separatamente le route `/api/*`.
+
+1. Collegare il repository GitHub a Cloudflare Workers Builds.
 2. Impostare build command `npm run build`.
 3. Impostare output directory `dist`.
-4. Configurare il dominio e aggiornare canonical, sitemap e `ALLOWED_ORIGIN`.
-5. Per le route SPA configurare il fallback a `index.html` nelle impostazioni Pages.
+4. Usare come deploy command `npx wrangler deploy`.
+5. Configurare il dominio e aggiornare canonical, sitemap e `ALLOWED_ORIGIN`.
+
+Il fallback SPA e il routing degli asset sono già definiti in `wrangler.toml`. Le richieste `/api/*` passano dal Worker; tutte le altre route servono il frontend React.
 
 ## D1 e Worker
 
@@ -62,7 +66,16 @@ Creare il database:
 npx wrangler d1 create marina-chiarelli
 ```
 
-Inserire l'ID restituito in `wrangler.toml`, quindi applicare la migrazione:
+Inserire il binding D1 nel pannello Cloudflare oppure aggiungere a `wrangler.toml`:
+
+```toml
+[[d1_databases]]
+binding = "DB"
+database_name = "marina-chiarelli"
+database_id = "ID_REALE_DEL_DATABASE"
+```
+
+Quindi applicare la migrazione:
 
 ```bash
 npx wrangler d1 migrations apply marina-chiarelli --remote
