@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, NavLink, Route, Routes, useLocation, useParams } from 'react-router-dom'
-import { ArrowRight, Check, Clock3, ExternalLink, Mail, MapPin, Menu, Play, Quote, X } from 'lucide-react'
+import { ArrowRight, BookOpen, Check, Clock3, ExternalLink, Landmark, Mail, MapPin, Menu, Quote, ShieldCheck, Sparkles, X } from 'lucide-react'
 import { biography, events, media, news, pillars, press, projects, site, timeline } from './data/content'
 import { getSeo } from './data/seo'
 import './App.css'
@@ -11,6 +11,7 @@ type EditorialItem = {
   summary?: string; excerpt?: string; description?: string; url?: string;
   body?: string; body2?: string; territories?: string; time?: string; tags?: string[];
   sourceUrl?: string; sourceLabel?: string;
+  image?: string; theme?: string;
 }
 
 const nav = [
@@ -19,6 +20,23 @@ const nav = [
 ]
 const socialLabels = { instagram: 'Instagram', facebook: 'Facebook', linkedin: 'LinkedIn', youtube: 'YouTube' }
 const adminStatusMap: Record<string, string> = { Pubblicati: 'published', Bozze: 'draft', 'In revisione': 'review', Scartati: 'discarded' }
+const footerNav = nav
+
+function themeKey(value?: string) {
+  const text = (value || '').toLowerCase()
+  if (text.includes('pari') || text === 'pari') return 'pari'
+  if (text.includes('giovani') || text.includes('giovanili') || text === 'giovani') return 'giovani'
+  if (text.includes('territ') || text.includes('novara')) return 'territorio'
+  return 'cultura'
+}
+
+function ThemeIcon({ theme }: { theme?: string }) {
+  const key = themeKey(theme)
+  if (key === 'pari') return <ShieldCheck aria-hidden="true" />
+  if (key === 'giovani') return <Sparkles aria-hidden="true" />
+  if (key === 'territorio') return <Landmark aria-hidden="true" />
+  return <BookOpen aria-hidden="true" />
+}
 
 function SocialIcon({ network }: { network: string }) {
   if (network === 'instagram') return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="5" /><circle cx="12" cy="12" r="3.2" /><circle cx="17" cy="7" r="1" /></svg>
@@ -28,7 +46,7 @@ function SocialIcon({ network }: { network: string }) {
   return <Mail size={19} />
 }
 
-function SocialLinks({ variant = 'header' }: { variant?: 'header' | 'section' | 'footer' }) {
+function SocialLinks({ variant = 'header' }: { variant?: 'header' | 'section' | 'footer' | 'contact' }) {
   return <div className={`social-links ${variant}`} aria-label="Canali social ufficiali">
     {Object.entries(site.socials).filter(([, url]) => url).map(([network, url]) => <a href={url} target="_blank" rel="noreferrer" key={network} aria-label={`${socialLabels[network as keyof typeof socialLabels]} di Marina Chiarelli`}><SocialIcon network={network} /><span>{socialLabels[network as keyof typeof socialLabels]}</span></a>)}
     <Link to="/contatti" aria-label="Scrivi all’ufficio di Marina Chiarelli"><SocialIcon network="email" /><span>Email</span></Link>
@@ -91,12 +109,30 @@ function Header() {
 function Footer() {
   return <footer className="footer">
     <div className="shell footer-grid">
-      <div><div className="brand light"><span>Marina</span> Chiarelli</div><p>{site.role}<br />{site.delegations}</p><p>{site.tagline}.</p></div>
-      <div><h3>Esplora</h3><Link to="/chi-e-marina">Chi è Marina</Link><Link to="/impegno">Impegno</Link><Link to="/progetti">Progetti</Link><Link to="/agenda">Agenda</Link><Link to="/news">News</Link></div>
-      <div><h3>Contatti e social</h3><Link to="/contatti"><Mail size={16} /> Scrivi all’ufficio</Link><SocialLinks variant="footer" /></div>
-      <div><h3>Informazioni</h3><Link to="/privacy">Privacy Policy</Link><Link to="/cookie">Cookie Policy</Link><span>Sito personale-istituzionale</span></div>
+      <div className="footer-identity">
+        <div className="footer-brand">Marina Chiarelli</div>
+        <strong>Assessore Regione Piemonte</strong>
+        <span>Cultura · Pari opportunità · Politiche giovanili</span>
+        <p>Un impegno istituzionale per valorizzare cultura, comunità, giovani e territori del Piemonte.</p>
+      </div>
+      <div>
+        <h3>Navigazione</h3>
+        <div className="footer-links">{footerNav.map(([label, href]) => <Link key={href} to={href}>{label}</Link>)}</div>
+      </div>
+      <div>
+        <h3>Contatti</h3>
+        <div className="footer-contact">
+          <span>{site.email}</span>
+          <span>{site.office}</span>
+          <Link to="/contatti"><Mail size={16} /> Vai alla pagina Contatti</Link>
+        </div>
+      </div>
+      <div>
+        <h3>Social</h3>
+        <SocialLinks variant="footer" />
+      </div>
     </div>
-    <div className="shell footer-bottom"><span>© 2026 Marina Chiarelli</span><span>Sito personale-istituzionale</span></div>
+    <div className="shell footer-bottom"><span>Copyright © 2026 Marina Chiarelli</span><span>Sito personale istituzionale</span><Link to="/privacy">Privacy Policy</Link><Link to="/cookie">Cookie Policy</Link></div>
   </footer>
 }
 
@@ -105,11 +141,20 @@ function Layout({ children }: { children: React.ReactNode }) {
 }
 
 function PillarCard({ pillar }: { pillar: typeof pillars[number] }) {
-  return <Link to={pillar.href} className="pillar"><div className="pillar-icon" aria-hidden="true">{pillar.key === 'cultura' ? '◆' : pillar.key === 'pari' ? '◐' : '✦'}</div><div><h3>{pillar.title}</h3><p>{pillar.description}</p><span>Approfondisci</span></div><ArrowRight /></Link>
+  return <Link to={pillar.href} className="pillar"><div className="pillar-icon"><ThemeIcon theme={pillar.key} /></div><div><h3>{pillar.title}</h3><p>{pillar.description}</p><span>Approfondisci</span></div><ArrowRight /></Link>
 }
 
-function ProjectCard({ project, index = 0, featured = false }: { project: typeof projects[number], index?: number, featured?: boolean }) {
-  return <article className={featured ? 'project-card featured' : 'project-card'}><div className={`project-art art-${(index % 3) + 1}`}><span>{project.category}</span></div><div><span className="meta">{project.status} · {project.territories}</span><h3>{project.title}</h3><p>{project.summary}</p><ArrowLink to={`/progetti/${project.slug}`}>Approfondisci</ArrowLink></div></article>
+function FallbackVisual({ label, theme }: { label: string, theme?: string }) {
+  return <div className={`visual-fallback visual-${themeKey(theme || label)}`}><ThemeIcon theme={theme || label} /><span>{label}</span></div>
+}
+
+function ProjectVisual({ item }: { item: EditorialItem }) {
+  if (item.image) return <div className="project-image"><img src={item.image} alt={`${item.title} - ${item.category || 'progetto istituzionale'}`} loading="lazy" /></div>
+  return <FallbackVisual label={item.category || 'Progetto'} theme={item.theme || item.category} />
+}
+
+function ProjectCard({ project, featured = false }: { project: typeof projects[number], featured?: boolean }) {
+  return <article className={featured ? 'project-card featured' : 'project-card'}><ProjectVisual item={project} /><div><span className="meta">{project.status} · {project.territories}</span><h3>{project.title}</h3><p>{project.summary}</p><ArrowLink to={`/progetti/${project.slug}`}>Approfondisci</ArrowLink></div></article>
 }
 
 function EventCard({ event }: { event: typeof events[number] }) {
@@ -151,29 +196,24 @@ function NewsletterForm() {
 }
 
 function Hero() {
-  return <section className="hero"><div className="shell hero-grid"><div className="hero-copy"><span className="eyebrow">Assessore Regione Piemonte</span><h1>Marina<br />Chiarelli</h1><h2>Cultura, comunità e futuro del Piemonte</h2><p>Un impegno istituzionale al servizio della cultura, delle pari opportunità, dei giovani e dei territori piemontesi.</p><div className="button-row"><Link className="button primary" to="/impegno">Scopri il suo impegno</Link><Link className="button secondary" to="/agenda">Segui l’agenda <ArrowRight size={18} /></Link></div><div className="hero-tags"><span>Cultura</span><span>Pari opportunità</span><span>Politiche giovanili</span></div></div><div className="hero-media"><div className="photo-frame"><img src="/images/marina-chiarelli.jpg" alt="Marina Chiarelli, Assessore della Regione Piemonte" /></div><div className="role"><strong>Assessore della Regione Piemonte</strong><span>Cultura · Pari opportunità · Politiche giovanili</span></div></div></div></section>
+  return <section className="hero"><div className="shell hero-grid"><div className="hero-copy"><span className="eyebrow">Assessore Regione Piemonte</span><h1>Marina<br />Chiarelli</h1><h2>Cultura, comunità e futuro del Piemonte</h2><p>Un impegno istituzionale per valorizzare il patrimonio culturale, sostenere le pari opportunità, dare spazio ai giovani e rafforzare il legame tra territori e futuro.</p><div className="button-row"><Link className="button primary" to="/impegno">Scopri il suo impegno</Link><Link className="button secondary" to="/agenda">Segui l’agenda <ArrowRight size={18} /></Link></div><div className="hero-tags"><span>Cultura</span><span>Pari opportunità</span><span>Politiche giovanili</span></div></div><div className="hero-media"><div className="photo-frame"><img src="/images/marina-chiarelli.jpg" alt="Marina Chiarelli, Assessore della Regione Piemonte" /></div><div className="role"><strong>Assessore della Regione Piemonte</strong><span>Cultura · Pari opportunità · Politiche giovanili</span></div></div></div></section>
 }
 
 function ManifestoSection() {
   return <section className="manifesto"><div className="shell manifesto-grid"><div><Quote className="quote-icon" /><h2>La cultura come infrastruttura del futuro</h2></div><p>La cultura non è solo memoria: è sviluppo, identità, partecipazione e coesione. Valorizzare il Piemonte significa costruire reti, sostenere i territori, dare spazio ai giovani e trasformare il patrimonio culturale in energia civile, sociale ed economica.</p></div></section>
 }
 
-function BiographyPreview() {
-  return <section className="section shell biography-preview"><div><span className="eyebrow">Profilo istituzionale</span><h2>Una storia nata a Novara, oggi al servizio del Piemonte</h2></div><div><p>{biography.preview}</p><p>Il suo lavoro regionale tiene insieme competenza amministrativa, ascolto dei territori e progettualità, con un’attenzione particolare alle comunità culturali, alle nuove generazioni e alle politiche di parità.</p><ArrowLink to="/chi-e-marina">Conosci il suo percorso</ArrowLink></div></section>
-}
-
 function JourneySection() {
-  return <section className="journey-section"><div className="shell"><SectionTitle title="Da Novara al Piemonte" intro="Un percorso istituzionale costruito attraverso responsabilità amministrative concrete, dal territorio alla dimensione regionale." /><div className="journey-timeline">{timeline.map(item => <article key={item.year}><span>{item.year}</span><h3>{item.short}</h3><p>{item.text}</p></article>)}</div></div></section>
+  return <section className="journey-section"><div className="shell"><SectionTitle title="Da Novara al Piemonte" intro="Il percorso istituzionale di Marina Chiarelli nasce nel territorio e si consolida attraverso incarichi amministrativi concreti: dall’esperienza nel Comune di Novara, dove ha ricoperto il ruolo di Vicesindaco e Assessore, fino all’impegno in Regione Piemonte nei settori della cultura, delle pari opportunità e delle politiche giovanili." /><div className="journey-timeline">{timeline.map(item => <article key={item.year}><span>{item.year}</span><h3>{item.short}</h3><p>{item.text}</p></article>)}</div></div></section>
 }
 
 function Home() {
   return <Layout>
     <Hero />
     <ManifestoSection />
-    <BiographyPreview />
 
     <section className="section shell">
-      <SectionTitle title="Tre responsabilità, una visione" intro="Politiche che si incontrano nella vita concreta delle persone e dei territori." link="/impegno" />
+      <SectionTitle title="Tre pilastri dell’impegno" intro="Cultura, pari opportunità e politiche giovanili come responsabilità pubbliche concrete per il Piemonte." link="/impegno" />
       <div className="pillar-list">{pillars.map(p => <PillarCard pillar={p} key={p.title} />)}</div>
     </section>
 
@@ -181,7 +221,7 @@ function Home() {
 
     <section className="section projects-band"><div className="shell">
       <SectionTitle title="Progetti per il Piemonte" intro="Percorsi di lavoro che uniscono istituzioni, comunità e competenze." link="/progetti" label="Tutti i progetti" />
-      <div className="project-grid">{projects.slice(0, 3).map((p, i) => <ProjectCard project={p} index={i} featured={i === 0} key={p.slug} />)}</div>
+      <div className="project-grid">{projects.slice(0, 3).map((p, i) => <ProjectCard project={p} featured={i === 0} key={p.slug} />)}</div>
     </div></section>
 
     <section className="section shell">
@@ -197,7 +237,7 @@ function Home() {
     <section className="section shell"><SectionTitle title="Rassegna stampa" intro="Una selezione verificata di contenuti pubblicati da fonti istituzionali e territoriali." link="/rassegna-stampa" label="Archivio stampa" /><div className="press-grid">{press.filter(item => item.status === 'published').slice(0, 3).map(item => <PressCard item={item} key={item.title} />)}</div></section>
 
     <section className="media-feature"><div className="shell media-grid"><YouTubeEmbed videoId="SwvRO7lXD50" title="Intervista a Marina Chiarelli sulle politiche culturali piemontesi" /><div><span className="meta">Media · Intervista</span><h2>Cultura, giovani e territori</h2><p>Un’intervista dedicata alle politiche culturali piemontesi, alle pari opportunità e al lavoro rivolto alle nuove generazioni.</p><ArrowLink to="/media">Guarda tutti i video</ArrowLink></div></div></section>
-    <section className="social-section"><div className="shell social-section-grid"><div><span className="eyebrow">Canali ufficiali</span><h2>Segui Marina</h2><p>Aggiornamenti, incontri, progetti e momenti istituzionali dal territorio piemontese.</p></div><SocialLinks variant="section" /></div></section>
+    <section className="social-section"><div className="shell social-section-grid"><div><span className="eyebrow">Canali ufficiali</span><h2>Segui Marina</h2><p>Aggiornamenti, incontri, iniziative e momenti istituzionali dal Piemonte e dai suoi territori.</p><Link className="button social-cta" to="/news">Segui gli aggiornamenti <ArrowRight size={18} /></Link></div><SocialLinks variant="section" /></div></section>
     <NewsletterForm />
   </Layout>
 }
@@ -224,14 +264,14 @@ function Biography() {
 
 function Commitment() {
   return <Layout><PageHero title="Il suo impegno" intro="Tre ambiti per costruire comunità più forti, inclusive e consapevoli." />
-    <section className="section shell commitment-list">{pillars.map((p, i) => <article key={p.title}><span>0{i + 1}</span><div><h2>{p.title}</h2><p>{p.long}</p><h3>Obiettivi e temi principali</h3><ul>{p.goals.map(g => <li key={g}>{g}</li>)}</ul><div className="related-line"><strong>Contenuti collegati</strong><span>{projects.filter(project => project.theme === p.key || project.theme === 'all').length} progetti</span><span>{news.filter(item => item.category.toLowerCase().includes(p.title.split(' ')[0].toLowerCase())).length} news</span><span>{media.filter(item => item.description.toLowerCase().includes(p.title.split(' ')[0].toLowerCase())).length} media</span></div><ArrowLink to={p.href}>Esplora il tema</ArrowLink></div></article>)}</section><NewsletterForm /></Layout>
+    <section className="section shell commitment-list">{pillars.map(p => <article key={p.title}><div className="commitment-icon"><ThemeIcon theme={p.key} /></div><div><h2>{p.title}</h2><p>{p.long}</p><h3>Obiettivi e temi principali</h3><ul>{p.goals.map(g => <li key={g}>{g}</li>)}</ul><div className="related-line"><strong>Contenuti collegati</strong><span>{projects.filter(project => project.theme === p.key || project.theme === 'all').length} progetti</span><span>{news.filter(item => item.category.toLowerCase().includes(p.title.split(' ')[0].toLowerCase())).length} news</span><span>{media.filter(item => item.description.toLowerCase().includes(p.title.split(' ')[0].toLowerCase())).length} media</span></div><ArrowLink to={p.href}>Esplora il tema</ArrowLink></div></article>)}</section><NewsletterForm /></Layout>
 }
 
 function ThemePage({ type }: { type: 'cultura' | 'pari' | 'giovani' }) {
   const p = pillars.find(x => x.key === type)!
   return <Layout><PageHero title={p.title} intro={p.long} />
     <section className="section shell theme-grid"><div><h2>Una politica vicina ai territori</h2><p>{p.editorial}</p><p>{p.editorial2}</p></div><aside><h3>Ambiti di lavoro</h3>{p.goals.map(g => <div key={g}>{g}</div>)}</aside></section>
-    <section className="section projects-band"><div className="shell"><SectionTitle title="Progetti e percorsi collegati" /><div className="project-grid compact">{projects.filter(x => x.theme === type || x.theme === 'all').slice(0, 3).map((x, i) => <article className="project-card" key={x.slug}><div className={`project-art art-${i + 1}`} /><div><span className="meta">{x.status}</span><h3>{x.title}</h3><p>{x.summary}</p></div></article>)}</div></div></section><NewsletterForm /></Layout>
+    <section className="section projects-band"><div className="shell"><SectionTitle title="Progetti e percorsi collegati" /><div className="project-grid compact">{projects.filter(x => x.theme === type || x.theme === 'all').slice(0, 3).map(x => <article className="project-card" key={x.slug}><ProjectVisual item={x} /><div><span className="meta">{x.status}</span><h3>{x.title}</h3><p>{x.summary}</p></div></article>)}</div></div></section><NewsletterForm /></Layout>
 }
 
 function Listing({ kind }: { kind: string }) {
@@ -244,9 +284,9 @@ function Listing({ kind }: { kind: string }) {
   }
   const data = kind === 'projects' ? projects : kind === 'news' ? news : kind === 'agenda' ? events : kind === 'press' ? press.filter(item => item.status === 'published') : media
   return <Layout><PageHero {...configs[kind]} /><section className="section shell archive-grid">
-    {(data as EditorialItem[]).map((item, i) => <article key={item.slug || item.title} className={kind === 'agenda' ? 'archive-item agenda-item' : 'archive-item'}>
+    {(data as EditorialItem[]).map(item => <article key={item.slug || item.title} className={kind === 'agenda' ? 'archive-item agenda-item' : 'archive-item'}>
       {kind === 'agenda' && <div className="date-box"><strong>{item.day}</strong><span>{item.month}</span></div>}
-      {kind === 'media' && <div className={`project-art media-art art-${(i % 3) + 1}`}><Play /></div>}
+      {kind === 'media' && <FallbackVisual label={item.category || 'Media'} theme={item.category} />}
       <div><span className="meta">{item.category || item.source || item.location} · {item.date || item.year}</span><h2>{item.title}</h2><p>{item.summary || item.excerpt || item.description}</p>
       {kind === 'agenda' && <p className="event-details"><Clock3 size={15} /> {item.time} <MapPin size={15} /> {item.location} · {item.status}</p>}
       {kind === 'press' || kind === 'media' || kind === 'agenda' ? <a className="arrow-link" href={item.url} target="_blank" rel="noreferrer">Vai alla fonte <ExternalLink size={16} /></a> : <ArrowLink to={item.slug ? `/${kind === 'projects' ? 'progetti' : kind}/${item.slug}` : '#'}>Approfondisci</ArrowLink>}</div>
@@ -297,7 +337,7 @@ function ContactForm() {
 
 function Contacts() {
   return <Layout><PageHero title="Contatti" intro="Per richieste istituzionali, inviti, segnalazioni e proposte relative ai temi dell’impegno pubblico." />
-    <section className="section shell contact-grid"><div><h2>Scrivi a Marina Chiarelli</h2><p>Il messaggio sarà trattato nel rispetto della privacy e indirizzato all’area competente.</p><div className="contact-note"><strong>Ufficio istituzionale</strong><span>Regione Piemonte · Torino</span><span>Risposta compatibilmente con i tempi dell’attività istituzionale.</span></div></div><ContactForm />
+    <section className="section shell contact-grid"><div><h2>Scrivi a Marina Chiarelli</h2><p>Il messaggio sarà trattato nel rispetto della privacy e indirizzato all’area competente.</p><div className="contact-note"><strong>Ufficio istituzionale</strong><span>{site.office}</span><span>{site.email}</span><span>Risposta compatibilmente con i tempi dell’attività istituzionale.</span></div><SocialLinks variant="contact" /></div><ContactForm />
     </section></Layout>
 }
 

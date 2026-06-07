@@ -5,6 +5,7 @@ export const site = {
   tagline: 'Cultura, comunità e futuro del Piemonte',
   origin: 'https://marina-chiarelli.dloddi86.workers.dev',
   email: 'Contatto tramite modulo istituzionale',
+  office: 'Regione Piemonte · Torino',
   socials: {
     instagram: 'https://www.instagram.com/marina_chiarelli/',
     facebook: 'https://www.facebook.com/marinachiarelli/',
@@ -32,24 +33,24 @@ export const timeline = [
 export const pillars = [
   {
     key: 'cultura', title: 'Cultura', href: '/impegno/cultura',
-    description: 'Bandi, reti, patrimonio e spettacolo dal vivo per un sistema culturale più solido.',
-    long: 'La cultura è un’infrastruttura civile, economica e territoriale. L’impegno regionale unisce sostegno agli operatori, valorizzazione del patrimonio, grandi eventi e reti diffuse in tutto il Piemonte.',
+    description: 'Rafforzare il sistema culturale piemontese significa investire in patrimonio, eventi, istituzioni, operatori e reti territoriali. La cultura diventa così una leva concreta di sviluppo e identità.',
+    long: 'Rafforzare il sistema culturale piemontese significa investire in patrimonio, eventi, istituzioni, operatori e reti territoriali. La cultura diventa così una leva concreta di sviluppo e identità.',
     editorial: 'Rafforza Cultura, i bandi triennali, l’ingresso in Federculture, Rete Antonelliana e NID Platform 2026 raccontano un metodo: costruire alleanze, dare continuità agli operatori e mettere in relazione istituzioni e territori.',
     editorial2: 'Dal Salone del Libro ai principali enti del patrimonio piemontese, la cultura viene affrontata non come somma di eventi, ma come ecosistema capace di produrre conoscenza, lavoro qualificato, partecipazione e identità.',
     goals: ['Sostegno agli enti culturali', 'Bandi e programmazione triennale', 'Patrimonio e reti territoriali', 'Spettacolo dal vivo', 'Accesso alla cultura'],
   },
   {
     key: 'pari', title: 'Pari opportunità', href: '/impegno/pari-opportunita',
-    description: 'Prevenzione, ascolto e servizi territoriali per trasformare i diritti in politiche concrete.',
-    long: 'Le pari opportunità richiedono strumenti concreti, servizi accessibili e responsabilità istituzionale. La priorità è rafforzare prevenzione, tutela, autonomia e prossimità nei territori.',
+    description: 'Le pari opportunità non sono uno slogan, ma una responsabilità pubblica: tutela, prevenzione, accesso, partecipazione e contrasto agli squilibri che limitano persone e comunità.',
+    long: 'Le pari opportunità non sono uno slogan, ma una responsabilità pubblica: tutela, prevenzione, accesso, partecipazione e contrasto agli squilibri che limitano persone e comunità.',
     editorial: 'Il potenziamento della rete antiviolenza con nuovi centri e sportelli e il lavoro dei Centri per uomini autori di violenza consolidano una risposta regionale che affianca alla tutela un’azione strutturale di prevenzione.',
     editorial2: 'L’impegno comprende anche iniziative civiche e culturali capaci di rendere visibile il contributo delle donne alla storia e alla vita pubblica, collegando parità, autonomia e qualità delle comunità.',
     goals: ['Centri e sportelli antiviolenza', 'Prevenzione della violenza', 'Percorsi CUAV', 'Autonomia e prossimità', 'Valorizzazione delle donne'],
   },
   {
     key: 'giovani', title: 'Politiche giovanili', href: '/impegno/politiche-giovanili',
-    description: 'Partecipazione, competenze e accesso per offrire opportunità reali alle nuove generazioni.',
-    long: 'Investire nei giovani significa creare occasioni per partecipare, formarsi, esprimere talento e costruire il proprio futuro nei territori piemontesi.',
+    description: 'Investire sui giovani significa creare occasioni reali di crescita: formazione, creatività, partecipazione, competenze e nuove possibilità nei territori piemontesi.',
+    long: 'Investire sui giovani significa creare occasioni reali di crescita: formazione, creatività, partecipazione, competenze e nuove possibilità nei territori piemontesi.',
     editorial: 'Piemonte per i Giovani finanzia progetti diffusi legati a partecipazione civica, creatività, transizione ecologica e benessere. Il lavoro con le Città Creative UNESCO collega inoltre scuole, formazione e filiere culturali.',
     editorial2: 'I voucher per il Salone del Libro mostrano come cultura e politiche giovanili possano convergere in misure semplici e accessibili. La linea di lavoro è chiara: ascolto, competenze, accesso e protagonismo.',
     goals: ['Piemonte per i Giovani', 'Partecipazione civica', 'Competenze e creatività', 'Città Creative UNESCO', 'Accesso a libri e cultura'],
