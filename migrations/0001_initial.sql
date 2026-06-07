@@ -1,0 +1,12 @@
+CREATE TABLE posts (id INTEGER PRIMARY KEY AUTOINCREMENT, slug TEXT UNIQUE NOT NULL, title TEXT NOT NULL, excerpt TEXT, body TEXT, category TEXT, status TEXT DEFAULT 'draft', published_at TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP, updated_at TEXT DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE projects (id INTEGER PRIMARY KEY AUTOINCREMENT, slug TEXT UNIQUE NOT NULL, title TEXT NOT NULL, category TEXT, image TEXT, summary TEXT, body TEXT, status TEXT, project_date TEXT, territories TEXT, related_news TEXT, related_media TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE events (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, event_date TEXT NOT NULL, location TEXT, description TEXT, category TEXT, link TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE media (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, type TEXT, image TEXT, url TEXT, embed TEXT, description TEXT, published_at TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE press_articles (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, source TEXT NOT NULL, url TEXT UNIQUE NOT NULL, published_at TEXT, imported_at TEXT DEFAULT CURRENT_TIMESTAMP, snippet TEXT, raw_text TEXT, summary TEXT, author TEXT, image TEXT, sentiment TEXT, confidence REAL, classification_reason TEXT, recommended_action TEXT, status TEXT DEFAULT 'review', category TEXT, tags TEXT, duplicate_hash TEXT UNIQUE, is_whitelisted INTEGER DEFAULT 0);
+CREATE TABLE contacts (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, surname TEXT NOT NULL, email TEXT NOT NULL, phone TEXT, message TEXT NOT NULL, privacy_consent INTEGER NOT NULL, newsletter_consent INTEGER DEFAULT 0, created_at TEXT DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE newsletter_subscribers (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE NOT NULL, name TEXT, consent_at TEXT NOT NULL, source TEXT, status TEXT DEFAULT 'active', unsubscribed_at TEXT);
+CREATE TABLE admin_settings (key TEXT PRIMARY KEY, value TEXT, updated_at TEXT DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE cron_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, executed_at TEXT NOT NULL, queries TEXT, found_count INTEGER DEFAULT 0, duplicate_count INTEGER DEFAULT 0, imported_count INTEGER DEFAULT 0, classified_count INTEGER DEFAULT 0, errors TEXT, duration_ms INTEGER);
+CREATE INDEX idx_press_status ON press_articles(status);
+CREATE INDEX idx_press_sentiment ON press_articles(sentiment);
+CREATE INDEX idx_events_date ON events(event_date);

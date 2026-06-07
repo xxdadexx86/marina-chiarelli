@@ -1,0 +1,15 @@
+name = "marina-chiarelli-api"
+main = "worker/index.ts"
+compatibility_date = "2026-06-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "marina-chiarelli"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[triggers]
+crons = ["0 5 * * *"]
+
+[vars]
+ALLOWED_ORIGIN = "https://www.marinachiarelli.it"
+PRESS_PROVIDER = "rss"
