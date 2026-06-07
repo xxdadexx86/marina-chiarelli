@@ -18,7 +18,7 @@ const nav = [
   ['Home', '/'], ['Chi è Marina', '/chi-e-marina'], ['Impegno', '/impegno'], ['Progetti', '/progetti'],
   ['Agenda', '/agenda'], ['News', '/news'], ['Rassegna stampa', '/rassegna-stampa'], ['Media', '/media'], ['Contatti', '/contatti'],
 ]
-const socialLabels = { instagram: 'Instagram', facebook: 'Facebook', linkedin: 'LinkedIn', youtube: 'YouTube' }
+const socialLabels = { instagram: 'Instagram', facebook: 'Facebook', linkedin: 'LinkedIn' }
 const adminStatusMap: Record<string, string> = { Pubblicati: 'published', Bozze: 'draft', 'In revisione': 'review', Scartati: 'discarded' }
 const footerNav = nav
 
@@ -42,7 +42,6 @@ function SocialIcon({ network }: { network: string }) {
   if (network === 'instagram') return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="5" /><circle cx="12" cy="12" r="3.2" /><circle cx="17" cy="7" r="1" /></svg>
   if (network === 'facebook') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 8.2h2.1V4.7c-.4-.1-1.7-.2-3.2-.2-3.1 0-5.2 1.9-5.2 5.5v3.1H4.5V17h3.4v7h4.1v-7h3.4l.5-3.9H12v-2.7c0-1.1.3-2.2 2.2-2.2Z" /></svg>
   if (network === 'linkedin') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 8.8h3.6V20H5.2V8.8Zm1.8-5A2.1 2.1 0 1 1 7 8a2.1 2.1 0 0 1 0-4.2ZM11 8.8h3.4v1.5h.1a3.7 3.7 0 0 1 3.3-1.8c3.6 0 4.2 2.3 4.2 5.4V20h-3.6v-5.4c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V20H11V8.8Z" /></svg>
-  if (network === 'youtube') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.4 7.3a3 3 0 0 0-2.1-2.1C17.4 4.7 12 4.7 12 4.7s-5.4 0-7.3.5a3 3 0 0 0-2.1 2.1A31 31 0 0 0 2.1 12c0 1.6.1 3.2.5 4.7a3 3 0 0 0 2.1 2.1c1.9.5 7.3.5 7.3.5s5.4 0 7.3-.5a3 3 0 0 0 2.1-2.1c.4-1.5.5-3.1.5-4.7 0-1.6-.1-3.2-.5-4.7ZM10 15.4V8.6l5.8 3.4-5.8 3.4Z" /></svg>
   return <Mail size={19} />
 }
 
