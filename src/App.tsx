@@ -10,6 +10,7 @@ type EditorialItem = {
   date?: string; year?: string; day?: string; month?: string; status?: string;
   summary?: string; excerpt?: string; description?: string; url?: string;
   body?: string; body2?: string; territories?: string; time?: string; tags?: string[];
+  sourceUrl?: string; sourceLabel?: string;
 }
 
 const nav = [
@@ -128,11 +129,11 @@ function NewsletterForm() {
 }
 
 function Hero() {
-  return <section className="hero"><div className="shell hero-grid"><div className="hero-copy"><h1>Marina<br />Chiarelli</h1><h2>Cultura, comunità e futuro del Piemonte</h2><p>Un impegno istituzionale al servizio della cultura, delle pari opportunità, dei giovani e dei territori piemontesi.</p><div className="button-row"><Link className="button primary" to="/impegno">Scopri il suo impegno</Link><Link className="button text" to="/agenda">Segui l’agenda <ArrowRight size={17} /></Link><Link className="button text" to="/news">Ultime notizie <ArrowRight size={17} /></Link></div></div><div className="hero-media"><img src="/images/marina-chiarelli.jpg" alt="Marina Chiarelli" /><div className="role"><strong>Assessore della Regione Piemonte</strong><span>Cultura, Pari opportunità e Politiche giovanili</span></div></div></div></section>
+  return <section className="hero"><div className="shell hero-grid"><div className="hero-copy"><h1>Marina<br />Chiarelli</h1><h2>Cultura, territori e futuro del Piemonte</h2><p>Assessore della Regione Piemonte con deleghe a Cultura, Pari opportunità e Politiche giovanili. Un percorso tra amministrazione locale e governo regionale, al servizio delle comunità.</p><div className="button-row"><Link className="button primary" to="/impegno">Scopri il suo impegno</Link><Link className="button text" to="/progetti">Progetti in evidenza <ArrowRight size={17} /></Link><Link className="button text" to="/news">Ultime notizie <ArrowRight size={17} /></Link></div></div><div className="hero-media"><img src="/images/marina-chiarelli.jpg" alt="Marina Chiarelli" /><div className="role"><strong>Assessore della Regione Piemonte</strong><span>Cultura, Pari opportunità e Politiche giovanili</span></div></div></div></section>
 }
 
 function ManifestoSection() {
-  return <section className="manifesto"><div className="shell manifesto-grid"><span className="manifesto-index">01</span><div><Quote className="quote-icon" /><h2>La cultura come<br />infrastruttura del futuro</h2></div><p>La cultura non è solo memoria: è sviluppo, identità, partecipazione e coesione. Valorizzare il Piemonte significa costruire reti, sostenere i territori, dare spazio ai giovani e trasformare il patrimonio culturale in energia civile, sociale ed economica.</p></div></section>
+  return <section className="manifesto"><div className="shell manifesto-grid"><span className="manifesto-index">01</span><div><Quote className="quote-icon" /><h2>Territori, persone<br />e opportunità</h2></div><p>Il Piemonte cresce quando mette in relazione cultura, territori e persone. L’azione pubblica deve creare condizioni, reti e opportunità: patrimoni più accessibili, istituzioni culturali più stabili, prevenzione della violenza e spazi reali di partecipazione per i giovani.</p></div></section>
 }
 
 function Home() {
@@ -151,8 +152,8 @@ function Home() {
     </div></section>
 
     <section className="section shell">
-      <SectionTitle title="In agenda" intro="Gli appuntamenti, gli incontri e le iniziative sul territorio." link="/agenda" label="Agenda completa" />
-      <div className="event-grid">{events.filter(event => event.status === 'Futuro').slice(0, 3).map(event => <EventCard event={event} key={event.title} />)}</div>
+      <SectionTitle title="Attività documentate" intro="Appuntamenti e iniziative pubbliche collegati ai principali dossier istituzionali." link="/agenda" label="Archivio attività" />
+      <div className="event-grid">{events.slice(0, 3).map(event => <EventCard event={event} key={event.title} />)}</div>
     </section>
 
     <section className="section dark"><div className="shell">
@@ -173,15 +174,15 @@ function PageHero({ title, intro }: { title: string, intro?: string }) {
 
 function Biography() {
   const timeline = [
-    ['2006', 'Inizia il percorso professionale forense, maturando esperienza nel diritto civile e amministrativo.'],
-    ['2016', 'L’impegno pubblico si consolida nel territorio novarese e nel dialogo con le comunità locali.'],
-    ['2018', 'Entra in Consiglio regionale e partecipa ai lavori delle commissioni istituzionali.'],
-    ['2021', 'Assume incarichi di responsabilità nell’Ufficio di Presidenza del Consiglio regionale.'],
-    ['2024', 'È nominata Assessore regionale a Cultura, Pari opportunità e Politiche giovanili.'],
+    ['2006', 'Avvia il proprio studio legale a Novara dopo la laurea in Giurisprudenza all’Università di Milano-Bicocca.'],
+    ['2016–18', 'Presiede organismi novaresi nel settore dei rifiuti e dell’ambiente, maturando esperienza di governance territoriale.'],
+    ['2018–22', 'È Assessore del Comune di Novara con deleghe che comprendono Ambiente, Sport, impiantistica e Pari opportunità.'],
+    ['2022–24', 'Ricopre il ruolo di Vicesindaco e Assessore del Comune di Novara, seguendo attività economiche, mercati e centro storico.'],
+    ['Dal 2024', 'Entra nella Giunta regionale; dal 25 giugno 2025 segue Cultura, Pari opportunità e Politiche giovanili.'],
   ]
-  return <Layout><PageHero title="Chi è Marina" intro="Un percorso nelle istituzioni, con radici nel territorio e uno sguardo rivolto al futuro del Piemonte." />
-    <section className="section shell bio-grid"><img src="/images/marina-chiarelli.jpg" alt="Ritratto istituzionale di Marina Chiarelli" /><div className="prose"><h2>Responsabilità pubblica e ascolto</h2><p>Marina Chiarelli è avvocata e Assessore della Regione Piemonte. Il suo percorso intreccia competenze giuridiche, esperienza amministrativa e una presenza costante nei territori.</p><p>Nata a Briga Novarese, ha costruito la propria esperienza tra professione, istituzioni e comunità locali. Oggi segue le deleghe alla Cultura, alle Pari opportunità e alle Politiche giovanili, ambiti strettamente connessi alla qualità dello sviluppo regionale.</p><p>Il lavoro istituzionale parte dall’ascolto di enti locali, associazioni, fondazioni, operatori culturali, scuole e nuove generazioni. L’obiettivo è dare continuità alle reti esistenti e creare opportunità accessibili in tutto il Piemonte.</p><blockquote>«Un territorio cresce quando riconosce il proprio patrimonio e offre alle persone gli strumenti per immaginare ciò che verrà.»</blockquote></div></section>
-    <section className="bio-values shell">{[['Persona','Ascolto, responsabilità e attenzione alle condizioni concrete delle persone.'],['Territorio','Un legame con il Piemonte costruito attraverso comunità locali, istituzioni e reti civiche.'],['Cultura','Patrimonio e creatività come strumenti di coesione, conoscenza e sviluppo.'],['Piemonte','Una regione plurale da valorizzare nelle sue città, aree interne e identità.']].map(([title,text]) => <article key={title}><h2>{title}</h2><p>{text}</p></article>)}</section>
+  return <Layout><PageHero title="Chi è Marina" intro="Dalla professione forense all’amministrazione di Novara, fino alla Giunta della Regione Piemonte." />
+    <section className="section shell bio-grid"><img src="/images/marina-chiarelli.jpg" alt="Ritratto istituzionale di Marina Chiarelli" /><div className="prose"><h2>Competenza professionale ed esperienza amministrativa</h2><p>Nata a Novara il 30 dicembre 1975, Marina Chiarelli è laureata in Giurisprudenza all’Università degli Studi di Milano-Bicocca ed è titolare dal 2006 di uno studio legale nella sua città.</p><p>Dopo gli incarichi nel sistema novarese dei rifiuti e dell’ambiente, entra nella Giunta del Comune di Novara nel 2018. Negli anni segue deleghe che spaziano dall’ambiente allo sport, dall’impiantistica alle pari opportunità, fino al commercio, all’artigianato, ai mercati e alla valorizzazione del centro storico.</p><p>Dal 16 ottobre 2022 al 1° luglio 2024 è Vicesindaco di Novara. Il 1° luglio 2024 entra nella Giunta della Regione Piemonte; dal 25 giugno 2025 il suo mandato è concentrato su Cultura, Pari opportunità e Politiche giovanili.</p><p>Il lavoro regionale mette al centro il rafforzamento del sistema culturale, le reti territoriali, la prevenzione della violenza di genere e programmi capaci di offrire opportunità concrete alle nuove generazioni.</p><blockquote>«La cultura oggi è una leva economica, sociale e identitaria.»</blockquote><a className="arrow-link" href="https://www.regione.piemonte.it/web/amministrazione/organi/chiarelli-marina" target="_blank" rel="noreferrer">Profilo ufficiale Regione Piemonte <ExternalLink size={16} /></a></div></section>
+    <section className="bio-values shell">{[['Professione','Avvocata e titolare dal 2006 di uno studio legale a Novara.'],['Novara','Un’esperienza amministrativa iniziata in Giunta nel 2018 e proseguita come Vicesindaco.'],['Regione','Assessore della Regione Piemonte dal 1° luglio 2024.'],['Deleghe','Cultura, Pari opportunità e Politiche giovanili dal 25 giugno 2025.']].map(([title,text]) => <article key={title}><h2>{title}</h2><p>{text}</p></article>)}</section>
     <section className="timeline-section"><div className="shell"><SectionTitle title="Il percorso" intro="Le tappe essenziali di un impegno costruito nel tempo." /><div className="timeline">{timeline.map(([year, text]) => <div key={year}><strong>{year}</strong><p>{text}</p></div>)}</div></div></section>
     <NewsletterForm /></Layout>
 }
@@ -202,7 +203,7 @@ function Listing({ kind }: { kind: string }) {
   const configs: Record<string, { title: string, intro: string }> = {
     projects: { title: 'Progetti', intro: 'Iniziative e percorsi di lavoro per valorizzare cultura, territori, persone e nuove generazioni.' },
     news: { title: 'Notizie', intro: 'Attività istituzionale, incontri, progetti e aggiornamenti dal territorio.' },
-    agenda: { title: 'Agenda', intro: 'Gli appuntamenti, gli incontri e le iniziative sul territorio.' },
+    agenda: { title: 'Attività e appuntamenti', intro: 'Una selezione di iniziative pubbliche documentate dalle fonti istituzionali e giornalistiche.' },
     press: { title: 'Rassegna stampa', intro: 'Una selezione approvata di articoli e contributi, con sintesi originale e collegamento alla fonte.' },
     media: { title: 'Media', intro: 'Foto, video, interviste e materiali ufficiali dall’attività istituzionale.' },
   }
@@ -213,7 +214,7 @@ function Listing({ kind }: { kind: string }) {
       {kind === 'media' && <div className={`project-art media-art art-${(i % 3) + 1}`}><Play /></div>}
       <div><span className="meta">{item.category || item.source || item.location} · {item.date || item.year}</span><h2>{item.title}</h2><p>{item.summary || item.excerpt || item.description}</p>
       {kind === 'agenda' && <p className="event-details"><Clock3 size={15} /> {item.time} <MapPin size={15} /> {item.location} · {item.status}</p>}
-      {kind === 'press' ? <a className="arrow-link" href={item.url} target="_blank" rel="noreferrer">Vai alla fonte <ExternalLink size={16} /></a> : kind === 'media' ? null : <ArrowLink to={item.slug ? `/${kind}/${item.slug}` : '#'}>Approfondisci</ArrowLink>}</div>
+      {kind === 'press' || kind === 'media' || kind === 'agenda' ? <a className="arrow-link" href={item.url} target="_blank" rel="noreferrer">Vai alla fonte <ExternalLink size={16} /></a> : <ArrowLink to={item.slug ? `/${kind === 'projects' ? 'progetti' : kind}/${item.slug}` : '#'}>Approfondisci</ArrowLink>}</div>
     </article>)}
   </section><NewsletterForm /></Layout>
 }
@@ -222,7 +223,7 @@ function Detail({ type }: { type: 'project' | 'news' }) {
   const { slug } = useParams()
   const item = (type === 'project' ? projects : news).find(x => x.slug === slug) as EditorialItem | undefined
   if (!item) return <Layout><PageHero title="Contenuto non trovato" intro="Il contenuto richiesto non è disponibile." /></Layout>
-  return <Layout><PageHero title={item.title} intro={item.summary || item.excerpt} /><article className="section shell article-prose"><span className="meta">{item.category} · {item.date}</span><h2>{type === 'project' ? 'Un percorso aperto e condiviso' : 'Dal territorio'}</h2><p>{item.body}</p><p>{item.body2}</p>{item.tags && <div className="tag-row">{item.tags.map(tag => <span key={tag}>{tag}</span>)}</div>}{type === 'project' && <><h3>Territori coinvolti</h3><p>{item.territories}</p><h3>Stato del progetto</h3><p>{item.status}</p></>}</article><NewsletterForm /></Layout>
+  return <Layout><PageHero title={item.title} intro={item.summary || item.excerpt} /><article className="section shell article-prose"><span className="meta">{item.category} · {item.date}</span><h2>{type === 'project' ? 'Obiettivi e azioni' : 'La notizia'}</h2><p>{item.body}</p><p>{item.body2}</p>{item.tags && <div className="tag-row">{item.tags.map(tag => <span key={tag}>{tag}</span>)}</div>}{type === 'project' && <><h3>Territori coinvolti</h3><p>{item.territories}</p><h3>Stato del progetto</h3><p>{item.status}</p></>}{item.sourceUrl && <p><a className="arrow-link" href={item.sourceUrl} target="_blank" rel="noreferrer">Fonte: {item.sourceLabel || 'approfondimento ufficiale'} <ExternalLink size={16} /></a></p>}</article><NewsletterForm /></Layout>
 }
 
 function ContactForm() {
@@ -245,7 +246,7 @@ function Contacts() {
 }
 
 function Legal({ cookie = false }: { cookie?: boolean }) {
-  return <Layout><PageHero title={cookie ? 'Cookie Policy' : 'Privacy Policy'} intro="Informazioni sul trattamento dei dati personali e sull’utilizzo del sito." /><article className="section shell article-prose"><h2>{cookie ? 'Uso dei cookie' : 'Titolare e finalità del trattamento'}</h2><p>Questa versione dimostrativa utilizza esclusivamente funzionalità tecniche necessarie alla navigazione. Prima della pubblicazione, i dati del titolare, i recapiti e i servizi effettivamente attivati dovranno essere verificati dal responsabile del progetto e dal consulente privacy.</p><h2>Dati raccolti</h2><p>I moduli raccolgono soltanto i dati conferiti volontariamente dall’utente. Il consenso newsletter è distinto e facoltativo. I dati non sono ceduti a terzi, salvo obblighi di legge o fornitori nominati responsabili del trattamento.</p><h2>Diritti dell’interessato</h2><p>È possibile richiedere accesso, rettifica, cancellazione, limitazione e opposizione secondo il Regolamento UE 2016/679.</p></article></Layout>
+  return <Layout><PageHero title={cookie ? 'Cookie Policy' : 'Privacy Policy'} intro="Informazioni sul trattamento dei dati personali e sull’utilizzo del sito." /><article className="section shell article-prose"><h2>{cookie ? 'Uso dei cookie' : 'Titolare e finalità del trattamento'}</h2><p>Il sito utilizza esclusivamente funzionalità tecniche necessarie alla navigazione. I dati conferiti attraverso i moduli sono trattati per gestire richieste, comunicazioni e servizi scelti dall’utente.</p><h2>Dati raccolti</h2><p>I moduli raccolgono soltanto i dati conferiti volontariamente dall’utente. Il consenso newsletter è distinto e facoltativo. I dati non sono ceduti a terzi, salvo obblighi di legge o fornitori nominati responsabili del trattamento.</p><h2>Diritti dell’interessato</h2><p>È possibile richiedere accesso, rettifica, cancellazione, limitazione e opposizione secondo il Regolamento UE 2016/679.</p></article></Layout>
 }
 
 function Admin() {
@@ -253,7 +254,7 @@ function Admin() {
   const [logged, setLogged] = useState(false)
   const filtered = useMemo(() => status === 'Tutti' ? press : press.filter(p => p.status === adminStatusMap[status]), [status])
   if (!logged) return <div className="admin-login"><form onSubmit={e => { e.preventDefault(); setLogged(true) }}><div className="brand"><span>Marina</span> Chiarelli</div><h1>Area amministrazione</h1><p>Accesso dimostrativo. In produzione la password è letta dalla variabile <code>ADMIN_PASSWORD</code>.</p><label>Password<input required type="password" defaultValue="demo" /></label><button className="button primary">Accedi</button><Link to="/">Torna al sito</Link></form></div>
-  return <div className="admin-shell"><aside><div className="brand light"><span>Marina</span> Chiarelli</div>{['Dashboard','News','Progetti','Agenda','Media','Interventi','Rassegna stampa','Contatti','Newsletter','Impostazioni'].map(x => <button className={x === 'Rassegna stampa' ? 'active' : ''} key={x}>{x}</button>)}</aside><main className="admin-main"><header><div><span>Area amministrazione</span><h1>Rassegna stampa</h1></div><button onClick={() => setLogged(false)}>Esci</button></header><div className="admin-tabs">{['Tutti','Pubblicati','Bozze','In revisione','Scartati'].map(x => <button className={status === x ? 'active' : ''} onClick={() => setStatus(x)} key={x}>{x}</button>)}</div><div className="admin-filters"><select aria-label="Sentiment"><option>Tutti i sentiment</option><option>Positive</option><option>Neutral</option><option>Ambiguous</option><option>Negative</option></select><select aria-label="Fonte"><option>Tutte le fonti</option><option>Whitelist</option><option>Non whitelist</option></select></div><div className="table-wrap"><table><thead><tr><th>Titolo e fonte</th><th>Data</th><th>Sentiment</th><th>Confidence</th><th>Stato</th><th>Azioni</th></tr></thead><tbody>{filtered.map(p => <tr key={p.title}><td><strong>{p.title}</strong><span>{p.source}</span></td><td>{p.date}</td><td><span className={`badge ${p.sentiment}`}>{p.sentiment}</span></td><td>{Math.round(p.confidence * 100)}%</td><td><span className="status">{p.status}</span></td><td><button>Apri</button><button>•••</button></td></tr>)}</tbody></table></div></main></div>
+  return <div className="admin-shell"><aside><div className="brand light"><span>Marina</span> Chiarelli</div>{['Dashboard','News','Progetti','Agenda','Media','Interventi','Rassegna stampa','Contatti','Newsletter','Impostazioni'].map(x => <button className={x === 'Rassegna stampa' ? 'active' : ''} key={x}>{x}</button>)}</aside><main className="admin-main"><header><div><span>Area amministrazione</span><h1>Rassegna stampa</h1></div><button onClick={() => setLogged(false)}>Esci</button></header><div className="admin-tabs">{['Tutti','Pubblicati','Bozze','In revisione','Scartati'].map(x => <button className={status === x ? 'active' : ''} onClick={() => setStatus(x)} key={x}>{x}</button>)}</div><div className="admin-filters"><select aria-label="Categoria"><option>Tutte le categorie</option><option>Cultura</option><option>Pari opportunità</option><option>Politiche giovanili</option></select><select aria-label="Fonte"><option>Tutte le fonti</option><option>Fonti istituzionali</option><option>Testate giornalistiche</option></select></div><div className="table-wrap"><table><thead><tr><th>Titolo e fonte</th><th>Data</th><th>Categoria</th><th>Stato</th><th>Azioni</th></tr></thead><tbody>{filtered.map(p => <tr key={p.title}><td><strong>{p.title}</strong><span>{p.source}</span></td><td>{p.date}</td><td>{p.category}</td><td><span className="status">{p.status}</span></td><td><button>Apri</button><button>•••</button></td></tr>)}</tbody></table></div></main></div>
 }
 
 export function AppRoutes() {
