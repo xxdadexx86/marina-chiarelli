@@ -17,8 +17,23 @@ const nav = [
   ['Home', '/'], ['Chi è Marina', '/chi-e-marina'], ['Impegno', '/impegno'], ['Progetti', '/progetti'],
   ['Agenda', '/agenda'], ['News', '/news'], ['Rassegna stampa', '/rassegna-stampa'], ['Media', '/media'], ['Contatti', '/contatti'],
 ]
-const socialLabels = { instagram: 'IG', facebook: 'FB', linkedin: 'IN' }
+const socialLabels = { instagram: 'Instagram', facebook: 'Facebook', linkedin: 'LinkedIn', youtube: 'YouTube' }
 const adminStatusMap: Record<string, string> = { Pubblicati: 'published', Bozze: 'draft', 'In revisione': 'review', Scartati: 'discarded' }
+
+function SocialIcon({ network }: { network: string }) {
+  if (network === 'instagram') return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="5" /><circle cx="12" cy="12" r="3.2" /><circle cx="17" cy="7" r="1" /></svg>
+  if (network === 'facebook') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 8.2h2.1V4.7c-.4-.1-1.7-.2-3.2-.2-3.1 0-5.2 1.9-5.2 5.5v3.1H4.5V17h3.4v7h4.1v-7h3.4l.5-3.9H12v-2.7c0-1.1.3-2.2 2.2-2.2Z" /></svg>
+  if (network === 'linkedin') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 8.8h3.6V20H5.2V8.8Zm1.8-5A2.1 2.1 0 1 1 7 8a2.1 2.1 0 0 1 0-4.2ZM11 8.8h3.4v1.5h.1a3.7 3.7 0 0 1 3.3-1.8c3.6 0 4.2 2.3 4.2 5.4V20h-3.6v-5.4c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V20H11V8.8Z" /></svg>
+  if (network === 'youtube') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.4 7.3a3 3 0 0 0-2.1-2.1C17.4 4.7 12 4.7 12 4.7s-5.4 0-7.3.5a3 3 0 0 0-2.1 2.1A31 31 0 0 0 2.1 12c0 1.6.1 3.2.5 4.7a3 3 0 0 0 2.1 2.1c1.9.5 7.3.5 7.3.5s5.4 0 7.3-.5a3 3 0 0 0 2.1-2.1c.4-1.5.5-3.1.5-4.7 0-1.6-.1-3.2-.5-4.7ZM10 15.4V8.6l5.8 3.4-5.8 3.4Z" /></svg>
+  return <Mail size={19} />
+}
+
+function SocialLinks({ variant = 'header' }: { variant?: 'header' | 'section' | 'footer' }) {
+  return <div className={`social-links ${variant}`} aria-label="Canali social ufficiali">
+    {Object.entries(site.socials).filter(([, url]) => url).map(([network, url]) => <a href={url} target="_blank" rel="noreferrer" key={network} aria-label={`${socialLabels[network as keyof typeof socialLabels]} di Marina Chiarelli`}><SocialIcon network={network} /><span>{socialLabels[network as keyof typeof socialLabels]}</span></a>)}
+    <Link to="/contatti" aria-label="Scrivi all’ufficio di Marina Chiarelli"><SocialIcon network="email" /><span>Email</span></Link>
+  </div>
+}
 
 function ScrollTop() {
   const { pathname } = useLocation()
@@ -58,19 +73,16 @@ function Header() {
   return <header className="header">
     <div className="shell nav-shell">
       <Link className="brand" to="/" onClick={() => setOpen(false)}>
-        <span>Marina</span> Chiarelli
+        <strong><span>Marina</span> Chiarelli</strong>
+        <small>Assessore Regione Piemonte</small>
       </Link>
       <button className="menu-button" aria-label={open ? 'Chiudi menu' : 'Apri menu'} onClick={() => setOpen(!open)}>
         {open ? <X /> : <Menu />}
       </button>
       <nav className={open ? 'nav open' : 'nav'} aria-label="Navigazione principale">
         <div className="nav-main">{nav.map(([label, href]) => <NavLink key={href} to={href} onClick={() => setOpen(false)}>{label}</NavLink>)}</div>
-        <div className="nav-social" aria-label="Canali social">
-          {Object.entries(site.socials).map(([network, url]) => {
-            const label = socialLabels[network as keyof typeof socialLabels]
-            return <a href={url} target="_blank" rel="noreferrer" key={network} aria-label={`${network[0].toUpperCase() + network.slice(1)} di Marina Chiarelli`}><strong>{label}</strong><span>{network}</span></a>
-          })}
-        </div>
+        <SocialLinks />
+        <Link className="header-cta" to="/contatti" onClick={() => setOpen(false)}>Contatti</Link>
       </nav>
     </div>
   </header>
@@ -81,7 +93,7 @@ function Footer() {
     <div className="shell footer-grid">
       <div><div className="brand light"><span>Marina</span> Chiarelli</div><p>{site.role}<br />{site.delegations}</p><p>{site.tagline}.</p></div>
       <div><h3>Esplora</h3><Link to="/chi-e-marina">Chi è Marina</Link><Link to="/impegno">Impegno</Link><Link to="/progetti">Progetti</Link><Link to="/agenda">Agenda</Link><Link to="/news">News</Link></div>
-      <div><h3>Contatti e social</h3><Link to="/contatti"><Mail size={14} /> Scrivi all’ufficio</Link>{Object.entries(site.socials).filter(([, url]) => url).map(([network, url]) => <a href={url} rel="noreferrer" target="_blank" key={network}>{network[0].toUpperCase() + network.slice(1)}</a>)}</div>
+      <div><h3>Contatti e social</h3><Link to="/contatti"><Mail size={16} /> Scrivi all’ufficio</Link><SocialLinks variant="footer" /></div>
       <div><h3>Informazioni</h3><Link to="/privacy">Privacy Policy</Link><Link to="/cookie">Cookie Policy</Link><span>Sito personale-istituzionale</span></div>
     </div>
     <div className="shell footer-bottom"><span>© 2026 Marina Chiarelli</span><span>Sito personale-istituzionale</span></div>
@@ -92,8 +104,8 @@ function Layout({ children }: { children: React.ReactNode }) {
   return <><Header /><main>{children}</main><Footer /></>
 }
 
-function PillarCard({ pillar, index }: { pillar: typeof pillars[number], index: number }) {
-  return <Link to={pillar.href} className="pillar"><span>0{index + 1}</span><div><h3>{pillar.title}</h3><p>{pillar.description}</p></div><ArrowRight /></Link>
+function PillarCard({ pillar }: { pillar: typeof pillars[number] }) {
+  return <Link to={pillar.href} className="pillar"><div className="pillar-icon" aria-hidden="true">{pillar.key === 'cultura' ? '◆' : pillar.key === 'pari' ? '◐' : '✦'}</div><div><h3>{pillar.title}</h3><p>{pillar.description}</p><span>Approfondisci</span></div><ArrowRight /></Link>
 }
 
 function ProjectCard({ project, index = 0, featured = false }: { project: typeof projects[number], index?: number, featured?: boolean }) {
@@ -139,11 +151,11 @@ function NewsletterForm() {
 }
 
 function Hero() {
-  return <section className="hero"><div className="shell hero-grid"><div className="hero-copy"><span className="eyebrow">Regione Piemonte</span><h1>Marina<br />Chiarelli</h1><h2>Cultura, comunità e futuro del Piemonte</h2><p>Un impegno istituzionale al servizio della cultura, delle pari opportunità, dei giovani e dei territori piemontesi.</p><div className="button-row"><Link className="button primary" to="/impegno">Scopri il suo impegno</Link><Link className="button text" to="/agenda">Segui l’agenda <ArrowRight size={17} /></Link><Link className="button text" to="/news">Ultime notizie <ArrowRight size={17} /></Link></div></div><div className="hero-media"><img src="/images/marina-chiarelli.jpg" alt="Marina Chiarelli, Assessore della Regione Piemonte" /><div className="role"><strong>Assessore della Regione Piemonte</strong><span>Cultura, Pari opportunità e Politiche giovanili</span></div></div></div></section>
+  return <section className="hero"><div className="shell hero-grid"><div className="hero-copy"><span className="eyebrow">Assessore Regione Piemonte</span><h1>Marina<br />Chiarelli</h1><h2>Cultura, comunità e futuro del Piemonte</h2><p>Un impegno istituzionale al servizio della cultura, delle pari opportunità, dei giovani e dei territori piemontesi.</p><div className="button-row"><Link className="button primary" to="/impegno">Scopri il suo impegno</Link><Link className="button secondary" to="/agenda">Segui l’agenda <ArrowRight size={18} /></Link></div><div className="hero-tags"><span>Cultura</span><span>Pari opportunità</span><span>Politiche giovanili</span></div></div><div className="hero-media"><div className="photo-frame"><img src="/images/marina-chiarelli.jpg" alt="Marina Chiarelli, Assessore della Regione Piemonte" /></div><div className="role"><strong>Assessore della Regione Piemonte</strong><span>Cultura · Pari opportunità · Politiche giovanili</span></div></div></div></section>
 }
 
 function ManifestoSection() {
-  return <section className="manifesto"><div className="shell manifesto-grid"><span className="manifesto-index">01</span><div><Quote className="quote-icon" /><h2>La cultura come<br />infrastruttura del futuro</h2></div><p>La cultura non è solo memoria: è sviluppo, identità, partecipazione e coesione. Valorizzare il Piemonte significa costruire reti, sostenere i territori, dare spazio ai giovani e trasformare il patrimonio culturale in energia civile, sociale ed economica.</p></div></section>
+  return <section className="manifesto"><div className="shell manifesto-grid"><div><Quote className="quote-icon" /><h2>La cultura come infrastruttura del futuro</h2></div><p>La cultura non è solo memoria: è sviluppo, identità, partecipazione e coesione. Valorizzare il Piemonte significa costruire reti, sostenere i territori, dare spazio ai giovani e trasformare il patrimonio culturale in energia civile, sociale ed economica.</p></div></section>
 }
 
 function BiographyPreview() {
@@ -162,7 +174,7 @@ function Home() {
 
     <section className="section shell">
       <SectionTitle title="Tre responsabilità, una visione" intro="Politiche che si incontrano nella vita concreta delle persone e dei territori." link="/impegno" />
-      <div className="pillar-list">{pillars.map((p, i) => <PillarCard pillar={p} index={i} key={p.title} />)}</div>
+      <div className="pillar-list">{pillars.map(p => <PillarCard pillar={p} key={p.title} />)}</div>
     </section>
 
     <JourneySection />
@@ -182,9 +194,10 @@ function Home() {
       <div className="intervention-grid">{news.slice(0, 3).map(item => <NewsCard item={item} key={item.slug} />)}</div>
     </div></section>
 
-    <section className="section shell"><SectionTitle title="Rassegna stampa" intro="Una selezione verificata di contenuti pubblicati da fonti istituzionali e territoriali." link="/rassegna-stampa" label="Archivio stampa" /><div className="press-grid">{press.filter(item => item.status === 'published').slice(0, 4).map(item => <PressCard item={item} key={item.title} />)}</div></section>
+    <section className="section shell"><SectionTitle title="Rassegna stampa" intro="Una selezione verificata di contenuti pubblicati da fonti istituzionali e territoriali." link="/rassegna-stampa" label="Archivio stampa" /><div className="press-grid">{press.filter(item => item.status === 'published').slice(0, 3).map(item => <PressCard item={item} key={item.title} />)}</div></section>
 
     <section className="media-feature"><div className="shell media-grid"><YouTubeEmbed videoId="SwvRO7lXD50" title="Intervista a Marina Chiarelli sulle politiche culturali piemontesi" /><div><span className="meta">Media · Intervista</span><h2>Cultura, giovani e territori</h2><p>Un’intervista dedicata alle politiche culturali piemontesi, alle pari opportunità e al lavoro rivolto alle nuove generazioni.</p><ArrowLink to="/media">Guarda tutti i video</ArrowLink></div></div></section>
+    <section className="social-section"><div className="shell social-section-grid"><div><span className="eyebrow">Canali ufficiali</span><h2>Segui Marina</h2><p>Aggiornamenti, incontri, progetti e momenti istituzionali dal territorio piemontese.</p></div><SocialLinks variant="section" /></div></section>
     <NewsletterForm />
   </Layout>
 }
@@ -197,12 +210,12 @@ function Biography() {
   return <Layout><PageHero title="Chi è Marina" intro="Una storia istituzionale nata a Novara e oggi al servizio del Piemonte." />
     <section className="section shell bio-intro"><img src="/images/marina-chiarelli.jpg" alt="Ritratto istituzionale di Marina Chiarelli" /><div><span className="eyebrow">Marina Chiarelli</span><h2>Competenza, responsabilità e attenzione ai territori</h2><p>{biography.birth}. Dopo la laurea in Giurisprudenza presso l’Università degli Studi di Milano-Bicocca, avvia nel 2006 il proprio studio legale a Novara, costruendo un percorso professionale fondato sulla competenza e sull’attenzione alle persone.</p></div></section>
     <section className="shell biography-story">
-      <article><span>01</span><div><h2>Radici novaresi</h2><p>Il legame con Novara attraversa la sua esperienza professionale e istituzionale. È nel territorio novarese che matura le prime responsabilità pubbliche e il confronto quotidiano con enti, servizi, attività economiche e comunità locali.</p></div></article>
-      <article><span>02</span><div><h2>Formazione giuridica e professione</h2><p>La formazione giuridica e l’attività forense sviluppano un metodo fondato sull’analisi, sull’ascolto e sulla responsabilità delle decisioni. Dal 2006 è titolare di uno studio legale nella sua città.</p></div></article>
-      <article><span>03</span><div><h2>L’impegno amministrativo</h2><p>Tra ottobre 2016 e maggio 2018 presiede il Consorzio Bacino Basso Novarese e l’ATO Rifiuti Novarese. Nel 2018 entra nella Giunta comunale seguendo Ambiente e Sport; dal 2019 assume anche le deleghe a impiantistica sportiva, Pari opportunità e sponsorizzazioni.</p></div></article>
-      <article><span>04</span><div><h2>L’esperienza da Vicesindaco</h2><p>Eletta alle amministrative comunali del 2021, dal 16 ottobre 2022 ricopre il ruolo di Vicesindaco e Assessore con competenze su Commercio, Artigianato, Industria e Agricoltura, mercati cittadini, valorizzazione del centro storico e tutela dei consumatori.</p></div></article>
-      <article><span>05</span><div><h2>Il ruolo in Regione Piemonte</h2><p>Il 1° luglio 2024 entra nella Giunta regionale. Dal 25 giugno 2025 il mandato si concentra su Cultura, Pari opportunità e Politiche giovanili, tre ambiti legati alla qualità della vita, alla coesione e alle opportunità dei territori.</p></div></article>
-      <article><span>06</span><div><h2>Una visione per il Piemonte</h2><p>La cultura come infrastruttura civile ed economica, le pari opportunità come politica concreta e i giovani come protagonisti: una linea di lavoro che unisce identità locale, reti regionali e capacità progettuale.</p><blockquote>«La cultura oggi è una leva economica, sociale e identitaria.»</blockquote><a className="arrow-link" href="https://www.regione.piemonte.it/web/amministrazione/organi/chiarelli-marina" target="_blank" rel="noreferrer">Profilo ufficiale Regione Piemonte <ExternalLink size={16} /></a></div></article>
+      <article><span>Novara</span><div><h2>Radici novaresi</h2><p>Il legame con Novara attraversa la sua esperienza professionale e istituzionale. È nel territorio novarese che matura le prime responsabilità pubbliche e il confronto quotidiano con enti, servizi, attività economiche e comunità locali.</p></div></article>
+      <article><span>Professione</span><div><h2>Formazione giuridica e professione</h2><p>La formazione giuridica e l’attività forense sviluppano un metodo fondato sull’analisi, sull’ascolto e sulla responsabilità delle decisioni. Dal 2006 è titolare di uno studio legale nella sua città.</p></div></article>
+      <article><span>Comune</span><div><h2>L’impegno amministrativo</h2><p>Tra ottobre 2016 e maggio 2018 presiede il Consorzio Bacino Basso Novarese e l’ATO Rifiuti Novarese. Nel 2018 entra nella Giunta comunale seguendo Ambiente e Sport; dal 2019 assume anche le deleghe a impiantistica sportiva, Pari opportunità e sponsorizzazioni.</p></div></article>
+      <article><span>Città</span><div><h2>L’esperienza da Vicesindaco</h2><p>Eletta alle amministrative comunali del 2021, dal 16 ottobre 2022 ricopre il ruolo di Vicesindaco e Assessore con competenze su Commercio, Artigianato, Industria e Agricoltura, mercati cittadini, valorizzazione del centro storico e tutela dei consumatori.</p></div></article>
+      <article><span>Regione</span><div><h2>Il ruolo in Regione Piemonte</h2><p>Il 1° luglio 2024 entra nella Giunta regionale. Dal 25 giugno 2025 il mandato si concentra su Cultura, Pari opportunità e Politiche giovanili, tre ambiti legati alla qualità della vita, alla coesione e alle opportunità dei territori.</p></div></article>
+      <article><span>Visione</span><div><h2>Una visione per il Piemonte</h2><p>La cultura come infrastruttura civile ed economica, le pari opportunità come politica concreta e i giovani come protagonisti: una linea di lavoro che unisce identità locale, reti regionali e capacità progettuale.</p><blockquote>«La cultura oggi è una leva economica, sociale e identitaria.»</blockquote><a className="arrow-link" href="https://www.regione.piemonte.it/web/amministrazione/organi/chiarelli-marina" target="_blank" rel="noreferrer">Profilo ufficiale Regione Piemonte <ExternalLink size={16} /></a></div></article>
     </section>
     <section className="bio-values shell">{[['Professione','Avvocata e titolare dal 2006 di uno studio legale a Novara.'],['Novara','Un’esperienza amministrativa iniziata in Giunta nel 2018 e proseguita come Vicesindaco.'],['Regione','Assessore della Regione Piemonte dal 1° luglio 2024.'],['Deleghe','Cultura, Pari opportunità e Politiche giovanili dal 25 giugno 2025.']].map(([title,text]) => <article key={title}><h2>{title}</h2><p>{text}</p></article>)}</section>
     <section className="timeline-section"><div className="shell"><SectionTitle title="Il percorso" intro="Le tappe essenziali di un impegno costruito nel tempo." /><div className="timeline">{timeline.map(item => <div key={item.year}><strong>{item.year}</strong><p>{item.text}</p></div>)}</div></div></section>

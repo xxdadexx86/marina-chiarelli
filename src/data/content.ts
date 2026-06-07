@@ -9,6 +9,7 @@ export const site = {
     instagram: 'https://www.instagram.com/marina_chiarelli/',
     facebook: 'https://www.facebook.com/marinachiarelli/',
     linkedin: 'https://it.linkedin.com/in/marina-chiarelli',
+    youtube: 'https://www.youtube.com/watch?v=SwvRO7lXD50',
   },
 }
 
