@@ -75,7 +75,7 @@ export const projects = [
   },
   {
     slug: 'piemonte-per-i-giovani', title: 'Piemonte per i Giovani', category: 'Politiche giovanili', theme: 'giovani',
-    status: 'Finanziato', date: '2025–2026', territories: 'Tutto il Piemonte', image: '/images/marina-chiarelli.jpg',
+    status: 'Finanziato', date: '2025–2026', territories: 'Tutto il Piemonte', image: '/images/piemonte-giovani.jpg',
     summary: '4,4 milioni di euro per finanziare tutti i progetti ammessi e sostenere opportunità diffuse sul territorio.',
     body: 'Piemonte per i Giovani sostiene progetti promossi nei territori su partecipazione civica, creatività, transizione ecologica, inclusione e benessere sociale.',
     body2: 'Il finanziamento di tutti i progetti ammessi amplia la copertura regionale e trasforma l’ascolto delle nuove generazioni in iniziative concrete, costruite insieme agli enti e alle comunità locali.',
